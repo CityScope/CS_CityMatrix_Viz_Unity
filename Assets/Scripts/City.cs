@@ -8,6 +8,7 @@ public class City : MonoBehaviour
     public float Spacing;
     public UdpReceive Receiver;
     public bool EnableAi;
+    public bool RebuildOnValidate;
     public GameObject BuildingPrefab;
     public List<GameObject> TopperPrefabs;
 
@@ -19,16 +20,41 @@ public class City : MonoBehaviour
         this._buildings = new Dictionary<Pos2D, Building>();
     }
 
+    private JsonCityMatrixMlai _lastPacket;
+
     // Update is called once per frame
     void Update()
     {
         if (Receiver.IsFresh())
         {
             JsonCityMatrixMlai packet = JsonUtility.FromJson<JsonCityMatrixMlai>(Receiver.GetLastPacket());
-            this.UpdateCity(packet.predict);
-            if (this.EnableAi) this.UpdateAi(packet.predict, packet.ai);
+            this._lastPacket = packet;
+            this.Construct(packet);
         }
-        if(!this.EnableAi) this.RemoveAi();
+        if (!this.EnableAi) this.RemoveAi();
+    }
+
+    private void Construct(JsonCityMatrixMlai packet)
+    {
+        if (packet == null) return;
+        this.UpdateCity(packet.predict);
+        if (this.EnableAi) this.UpdateAi(packet.predict, packet.ai);
+    }
+
+    void OnValidate()
+    {
+        if (this.RebuildOnValidate && Application.isPlaying) this.Rebuild();
+    }
+
+    private void Rebuild()
+    {
+        Debug.Log("Rebuilding!");
+        foreach (var b in this._buildings)
+        {
+            Destroy(b.Value.gameObject);
+        }
+        this._buildings.Clear();
+        this.Construct(this._lastPacket);
     }
 
     public const int RoadId = 6;
@@ -66,14 +92,14 @@ public class City : MonoBehaviour
     }
 
     private CityChange _lastAiChange = null;
-    
+
     private Stack<Building> _aiBuildings = new Stack<Building>();
 
     private void UpdateAi(JsonCityMatrix predictCity, JsonCityMatrix aiCity)
     {
         CityChange change = CityChange.GetChange(predictCity, aiCity);
         if (change == null || change.Equals(_lastAiChange)) return;
-        
+
         this.RemoveAi();
         this._lastAiChange = change;
 
@@ -106,7 +132,7 @@ public class City : MonoBehaviour
     {
         foreach (var b in this._aiBuildings)
         {
-            if(b.State == Building.View.Building) b.ShadowDelta = 0;
+            if (b.State == Building.View.Building) b.ShadowDelta = 0;
         }
         this._aiBuildings.Clear();
         this._lastAiChange = null;

@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class Building : MonoBehaviour
 {
+    public bool RebuildOnValidate;
     [SerializeField] private int _height;
     [SerializeField] private int _shadowDelta;
     [SerializeField] private float _heightChangeDuration = 0.5F;
@@ -142,25 +143,18 @@ public class Building : MonoBehaviour
     }
 
 
-    void Start()
-    {
-    }
-
-    void Update()
-    {
-    }
-
     void OnValidate()
     {
-        //if (Application.isPlaying) this.ReBuild();
+        if (this.RebuildOnValidate && Application.isPlaying) this.ReBuild();
     }
 
     void OnDrawGizmos()
     {
-        Gizmos.color = Color.yellow;
+        var rectGizmo = this.GetComponent<RectGizmo>();
         var pos = this.transform.position;
         pos.y += this._height * this._spacing / 2;
-        Gizmos.DrawWireCube(pos, new Vector3(1, this._height * this._spacing, 1));
+        rectGizmo.Center = pos;
+        rectGizmo.Size = new Vector3(1, this._height * this._spacing, 1);
     }
 
     private void UpdateHeightAndShadow()
@@ -220,7 +214,7 @@ public class Building : MonoBehaviour
     }
 
 
-    private void ReBuild()
+    public void ReBuild()
     {
         if(this._heightCoroutine != null) StopCoroutine(this._heightCoroutine);
         
