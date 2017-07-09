@@ -6,18 +6,17 @@ using UnityEngine;
 public class City : MonoBehaviour
 {
     public float Spacing;
-    public UdpReceive Receiver;
+    public UdpObserver PacketReceiver;
     public bool EnableAi;
     public bool RebuildOnValidate;
     public GameObject BuildingPrefab;
     public List<GameObject> TopperPrefabs;
 
-    private Dictionary<Pos2D, Building> _buildings;
+    private readonly Dictionary<Pos2D, Building> _buildings = new Dictionary<Pos2D, Building>();
 
     // Use this for initialization
     void Start()
     {
-        this._buildings = new Dictionary<Pos2D, Building>();
     }
 
     private JsonCityMatrixMlai _lastPacket;
@@ -25,9 +24,9 @@ public class City : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Receiver.IsFresh())
+        if (this.PacketReceiver.Fresh)
         {
-            JsonCityMatrixMlai packet = JsonUtility.FromJson<JsonCityMatrixMlai>(Receiver.GetLastPacket());
+            JsonCityMatrixMlai packet = JsonUtility.FromJson<JsonCityMatrixMlai>(this.PacketReceiver.Packet);
             this._lastPacket = packet;
             this.Construct(packet);
         }
@@ -48,7 +47,6 @@ public class City : MonoBehaviour
 
     private void Rebuild()
     {
-        Debug.Log("Rebuilding!");
         foreach (var b in this._buildings)
         {
             Destroy(b.Value.gameObject);
