@@ -18,7 +18,7 @@ public class SpeakRTVoice : MonoBehaviour {
     public float waitingTime;
     public List<string> sentencesToSpeak;
     public GameObject RTVoice;
-    public GameObject debugText;
+    //public GameObject debugText;
     //public string invokedSentenceToSpeak;
 
     void Start()
@@ -81,7 +81,7 @@ public class SpeakRTVoice : MonoBehaviour {
             // get last substep int and add found sub sentences to sentencesToSpeak
             bool subStepIntFound = true;
             int currentSubStepInt = 0;
-            //int lastSubStepInt = 0;
+            int lastSubStepInt = 0;
             // define search range to avoid find "0.2" in "10.2"
             int searchUpto = 0;
             if (AIStep < lastStepInt)
@@ -123,7 +123,7 @@ public class SpeakRTVoice : MonoBehaviour {
                     //Debug.Log("checked, next sub step int:" + currentSubStepInt);
                 }
             }
-            //lastSubStepInt = currentSubStepInt - 1;
+            lastSubStepInt = currentSubStepInt - 1;
             //Debug.Log("last sub step int found: " + lastSubStepInt);
 
             // speak sub sentences
@@ -185,7 +185,7 @@ public class SpeakRTVoice : MonoBehaviour {
         textToSpeak.text = text;
         RTVoice.GetComponent<LiveSpeaker>().Silence();
         RTVoice.GetComponent<LiveSpeaker>().Speak(text);
-        debugText.GetComponent<Text>().text += "\n" + "RTVoice.GetComponent<LiveSpeaker>().Speak(\"" + text + "\");";
+        //debugText.GetComponent<Text>().text += "\n" + "RTVoice.GetComponent<LiveSpeaker>().Speak(\"" + text + "\");";
     }
 
     IEnumerator waitAndShowButton(float time, GameObject button)

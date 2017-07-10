@@ -39,6 +39,7 @@ public class UdpListener : MonoBehaviour, IObservable<string>
     void OnDisable()
     {
         if (this._client != null) this._client.Close();
+        if (this._threadController == null) return;
         this._threadController.Stop = true;
         this._thread.Join();
     }

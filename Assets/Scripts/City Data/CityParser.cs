@@ -50,7 +50,16 @@ public class CityParser : MonoBehaviour, IObservable<JsonCityMatrixMlai>, IObser
 
 	public void OnNext(string value)
 	{
-		var packet = JsonUtility.FromJson<JsonCityMatrixMlai>(value);
+		JsonCityMatrixMlai packet;
+		try
+		{
+			packet = JsonUtility.FromJson<JsonCityMatrixMlai>(value);
+		}
+		catch (Exception e)
+		{
+			Debug.LogError(e);
+			return;
+		}
 		foreach (var o in this._observers) 
 		{
 			o.OnNext(packet);

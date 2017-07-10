@@ -6,7 +6,7 @@ using UnityEngine;
 public class CityView : MonoBehaviour
 {
     public float Spacing;
-    public UdpObserver PacketReceiver;
+    public CityObserver CityObserver;
     public bool EnableAi;
     public bool RebuildOnValidate;
     public GameObject BuildingPrefab;
@@ -24,9 +24,9 @@ public class CityView : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (this.PacketReceiver.Fresh)
+        if (this.CityObserver.Fresh)
         {
-            JsonCityMatrixMlai packet = JsonUtility.FromJson<JsonCityMatrixMlai>(this.PacketReceiver.Packet);
+            var packet = this.CityObserver.LastPacket;
             this._lastPacket = packet;
             this.Construct(packet);
         }

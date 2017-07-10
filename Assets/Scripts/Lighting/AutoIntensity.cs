@@ -2,8 +2,8 @@
 using System.Collections;
 
 // Source: https://unity3d.com/learn/tutorials/topics/graphics/realtime-global-illumination-daynight-cycle
-public class AutoIntensity : MonoBehaviour {
-
+public class AutoIntensity : MonoBehaviour
+{
     public Gradient NightDayColor;
 
     public float MaxIntensity = 3f;
@@ -32,25 +32,22 @@ public class AutoIntensity : MonoBehaviour {
     Skybox _sky;
     Material _skyMat;
 
-    void Start () 
+    void Start()
     {
-    
         _mainLight = GetComponent<Light>();
         _skyMat = RenderSettings.skybox;
-
     }
 
-    void Update () 
+    void Update()
     {
-    
         float tRange = 1 - MinPoint;
-        float dot = Mathf.Clamp01 ((Vector3.Dot (_mainLight.transform.forward, Vector3.down) - MinPoint) / tRange);
+        float dot = Mathf.Clamp01((Vector3.Dot(_mainLight.transform.forward, Vector3.down) - MinPoint) / tRange);
         float i = ((MaxIntensity - MinIntensity) * dot) + MinIntensity;
 
         _mainLight.intensity = i;
 
         tRange = 1 - MinAmbientPoint;
-        dot = Mathf.Clamp01 ((Vector3.Dot (_mainLight.transform.forward, Vector3.down) - MinAmbientPoint) / tRange);
+        dot = Mathf.Clamp01((Vector3.Dot(_mainLight.transform.forward, Vector3.down) - MinAmbientPoint) / tRange);
         i = ((MaxAmbient - MinAmbient) * dot) + MinAmbient;
         RenderSettings.ambientIntensity = i;
 
@@ -61,16 +58,14 @@ public class AutoIntensity : MonoBehaviour {
         RenderSettings.fogDensity = FogDensityCurve.Evaluate(dot) * FogScale;
 
         i = ((DayAtmosphereThickness - NightAtmosphereThickness) * dot) + NightAtmosphereThickness;
-        _skyMat.SetFloat ("_AtmosphereThickness", i);
+        _skyMat.SetFloat("_AtmosphereThickness", i);
 
-        if (dot > 0) 
-            transform.Rotate (DayRotateSpeed * Time.deltaTime * _skySpeed);
+        if (dot > 0)
+            transform.Rotate(DayRotateSpeed * Time.deltaTime * _skySpeed);
         else
-            transform.Rotate (NightRotateSpeed * Time.deltaTime * _skySpeed);
+            transform.Rotate(NightRotateSpeed * Time.deltaTime * _skySpeed);
 
-        if (Input.GetKeyDown (KeyCode.Q)) _skySpeed *= 0.5f;
-        if (Input.GetKeyDown (KeyCode.E)) _skySpeed *= 2f;
-
-
+        if (Input.GetKeyDown(KeyCode.Q)) _skySpeed *= 0.5f;
+        if (Input.GetKeyDown(KeyCode.E)) _skySpeed *= 2f;
     }
 }

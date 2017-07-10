@@ -12,7 +12,7 @@ public class AIStepCtrl : MonoBehaviour {
     //public UDPReceive udpReceive;
     //private static string AIStepString;  //  A new Static variable to hold our score.
 
-    public CityObserver cityDataCtrl;
+    public CityObserver CityObserver;
     
     void Start () {
         //intAIStep = -1;
@@ -35,9 +35,11 @@ public class AIStepCtrl : MonoBehaviour {
         }
         */
 
-        //RZ 170615 recieved in the whole output city JSON
-        intAIStep = cityDataCtrl.LastPacket != null ? cityDataCtrl.LastPacket.predict.objects.AIStep: -1;
-
+        if (this.CityObserver.Fresh)
+        {
+            this.intAIStep = this.CityObserver.LastPacket.predict.objects.AIStep;
+        }
+        
         // inAIStep updated from Python server > RH VIZ or Speech Recognition
         if (intAIStep != prevIntAIStep)
         {
