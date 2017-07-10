@@ -34,6 +34,7 @@ public class UdpSender : MonoBehaviour
 		
 		Debug.Log(string.Format("Sending {0} bytes to {1}", bytes.Length, endpoint));
 		var c = this._client.Send(bytes, bytes.Length, endpoint);
+		if(c < bytes.Length) Debug.LogWarning(string.Format("Only {0} bytes send of {1}", c, bytes.Length));
 
 		this.InjectPacket = null;
 	}

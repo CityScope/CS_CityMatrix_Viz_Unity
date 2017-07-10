@@ -26,7 +26,7 @@ public class RectGizmo : MonoBehaviour
     private void Draw()
     {
         Gizmos.color = this.Color;
-        if(this.Wireframe) Gizmos.DrawWireCube(this.Center, this.Size);
-        else Gizmos.DrawCube(this.Center, this.Size);
+        if(this.Wireframe) Gizmos.DrawWireCube(this.transform.position + this.Center, this.Size);
+        else Gizmos.DrawCube(this.transform.position + this.Center, this.Size);
     }
 }

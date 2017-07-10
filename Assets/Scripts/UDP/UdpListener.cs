@@ -53,7 +53,6 @@ public class UdpListener : MonoBehaviour, IObservable<string>
 
     private void InitializeClient()
     {
-        Debug.Log(string.Format("Initializing UDPListener on port: {0}", this.Port));
         if (_client != null) _client.Close();
         var endpoint = new IPEndPoint(IPAddress.Any, this.Port);
         this._endpoint = endpoint;
