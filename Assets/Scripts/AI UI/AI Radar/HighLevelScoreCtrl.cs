@@ -14,12 +14,14 @@ public class HighLevelScoreCtrl : MonoBehaviour
     public Text totalScore;
     public Text innovationPotentialScoreSuggested;
     public Text resourceEfficiencyScoreSuggested;
+    public Text totalScoreSuggested;
     public GameObject currentScores;
     public GameObject suggestedScores;
     public GameObject arrows;
     public bool showAISuggestion;
-    public Text weight1;
-    public Text weight2;
+    public Slider balance;
+    public Text balanceText1;
+    public Text balanceText2;
 
     void Update()
     {
@@ -42,13 +44,14 @@ public class HighLevelScoreCtrl : MonoBehaviour
         innovationPotentialScore.text = string.Format("{0:0}", IPScore);
 
         float REScore = (CMRadarChart.metrics[2] + CMRadarChart.metrics[3]
-                         + CMRadarChart.metrics[4]) / 3.0f * 100.0f;
+            + CMRadarChart.metrics[4]) / 3.0f * 100.0f;
         resourceEfficiencyScore.text = string.Format("{0:0}", REScore);
 
-        float w1 = weight1.text == "" ? 0 : float.Parse(weight1.text);
-        float w2 = weight2.text == "" ? 0 : float.Parse(weight2.text);
-        float tScore = IPScore * w1 / 100.0f + REScore * w2 / 100.0f;
-        totalScore.text = string.Format("{0:0}", tScore);
+        float TScore = IPScore * (1 - balance.value) + REScore * balance.value;
+        totalScore.text = string.Format("{0:0}", TScore);
+
+        balanceText1.text = string.Format("{0:0}", (1 - balance.value) * 100.0f) + "%";
+        balanceText2.text = string.Format("{0:0}", balance.value * 100.0f) + "%";
 
         // suggested
         float IPScoreSuggested = (CMRadarChart.metricsSuggested[0] + CMRadarChart.metricsSuggested[1]) / 2.0f * 100.0f;
@@ -65,7 +68,7 @@ public class HighLevelScoreCtrl : MonoBehaviour
         innovationPotentialScoreSuggested.text = IPDeltaStr;
 
         float REScoreSuggested = (CMRadarChart.metricsSuggested[2] + CMRadarChart.metricsSuggested[3]
-                                  + CMRadarChart.metricsSuggested[4]) / 3.0f * 100.0f;
+            + CMRadarChart.metricsSuggested[4]) / 3.0f * 100.0f;
         float REDelta = REScoreSuggested - REScore;
         string REDeltaStr;
         if (REDelta >= 0.0f)
@@ -77,5 +80,19 @@ public class HighLevelScoreCtrl : MonoBehaviour
             REDeltaStr = "-" + string.Format("{0:0}", -REDelta);
         }
         resourceEfficiencyScoreSuggested.text = REDeltaStr;
+
+
+        float TSuggested = IPScoreSuggested * (1 - balance.value) + REScoreSuggested * balance.value;
+        float TDelta = TSuggested - TScore;
+        string TDeltaStr;
+        if (TDelta >= 0.0f)
+        {
+            TDeltaStr = "+" + string.Format("{0:0}", TDelta);
+        }
+        else
+        {
+            TDeltaStr = "-" + string.Format("{0:0}", -TDelta);
+        }
+        totalScoreSuggested.text = TDeltaStr;
     }
 }
