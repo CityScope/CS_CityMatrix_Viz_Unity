@@ -9,6 +9,9 @@ public class CityView : MonoBehaviour
     public CityObserver CityObserver;
     public bool EnableAi;
     public bool RebuildOnValidate;
+
+    public GameObject BuildingChangeIndicator;
+    public GameObject BuildingChangeArrowPrefab;
     public GameObject BuildingPrefab;
     public List<GameObject> TopperPrefabs;
 
@@ -73,19 +76,12 @@ public class CityView : MonoBehaviour
             }
 
             Building b = this._buildings[pos];
-            switch (jb.type)
+            b.State = GetBuildingType(jb.type);
+            
+            if (b.State == Building.View.Building)
             {
-                case -1:
-                    b.State = Building.View.Grass;
-                    break;
-                case RoadId:
-                    b.State = Building.View.Road;
-                    break;
-                default:
-                    b.State = Building.View.Building;
-                    b.Height = jsonCity.objects.densities[jb.type];
-                    b.TopperPrefab = this.TopperPrefabs[jb.type];
-                    break;
+                b.Height = jsonCity.objects.densities[jb.type];
+                b.TopperPrefab = this.TopperPrefabs[jb.type];
             }
         }
     }
@@ -118,7 +114,21 @@ public class CityView : MonoBehaviour
             var bChange = change as BuildingChange;
             Debug.Log("AI building change detected");
             var b = this._buildings[bChange.Pos];
-            //b.ShadowDelta = 100; //Todo change this
+            var indicator = Instantiate(BuildingPrefab).GetComponent<Building>();
+            indicator.State = GetBuildingType(bChange.NewId);
+            if (indicator.State == Building.View.Building)
+            {
+                indicator.TopperPrefab = this.TopperPrefabs[bChange.NewId];
+                indicator.Height = bChange.NewDensity;
+            }
+            indicator.transform.parent = this.BuildingChangeIndicator.transform;
+            indicator.transform.localPosition = Vector3.zero;
+
+            var arrow = Instantiate(BuildingChangeArrowPrefab).GetComponent<BuildingsArrow>();
+            arrow.StartBuilding = indicator;
+            arrow.EndBuilding = b;
+            arrow.transform.parent = this.BuildingChangeIndicator.transform;
+           
             this._aiBuildings.Push(b);
         }
         else
@@ -134,7 +144,24 @@ public class CityView : MonoBehaviour
             if (b.State == Building.View.Building) b.ShadowDelta = 0;
         }
         this._aiBuildings.Clear();
+        foreach (Transform o in this.BuildingChangeIndicator.transform)
+        {
+            Destroy(o.gameObject);
+        }
         this._lastAiChange = null;
+    }
+
+    private Building.View GetBuildingType(int id)
+    {
+        switch (id)
+        {
+            case -1:
+                return Building.View.Grass;
+            case RoadId:
+                return Building.View.Road;
+            default:
+                return Building.View.Building;
+        }
     }
 
     private Vector3 GetLocalPos(Pos2D pos)

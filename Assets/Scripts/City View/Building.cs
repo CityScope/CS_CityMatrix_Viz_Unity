@@ -284,7 +284,7 @@ public class Building : MonoBehaviour
         return new Vector3(0, this._spacing * height, 0);
     }
 
-    private Vector3 GetTopperPos(int height)
+    public Vector3 GetTopperPos(int height)
     {
         return new Vector3(0, this._spacing * height, 0);
     }

@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.IMGUI.Controls;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class RectGizmo : MonoBehaviour
 {
@@ -11,7 +8,7 @@ public class RectGizmo : MonoBehaviour
     public Vector3 Center;
     public Vector3 Size = Vector3.one;
     
-    public Color Color = UnityEngine.Color.yellow;
+    public Color Color = Color.yellow;
 
     void OnDrawGizmos()
     {
