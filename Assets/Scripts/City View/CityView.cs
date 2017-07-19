@@ -166,6 +166,6 @@ public class CityView : MonoBehaviour
 
     private Vector3 GetLocalPos(Pos2D pos)
     {
-        return new Vector3(this.Spacing * pos.x, 0, this.Spacing * pos.y);
+        return new Vector3(-this.Spacing * pos.x, 0, this.Spacing * pos.y);
     }
 }
