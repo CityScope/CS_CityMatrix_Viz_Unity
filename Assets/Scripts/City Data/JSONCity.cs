@@ -6,7 +6,7 @@ public class JsonCityMatrixMlai
 {
     public bool ShowAi
     {
-        get { return this.predict.objects.AIStep == 20 && this.ai.grid != null; }
+        get { return this.predict.objects.AIStep >= 20 && this.ai.grid != null; }
     }
     public JsonCityMatrix predict;
     public JsonCityMatrix ai;

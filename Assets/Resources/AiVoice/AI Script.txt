@@ -61,7 +61,7 @@ population density, experience diversity, energy and construction cost efficienc
 7.0
 According to previous research, population density and diversity are the key factors contributing to the innovation potential of the city. 
 7.1
-So we want to maximize both the population density and diversity to achieve a high "Innovation Potential" score. 
+So we want to maximize both the population density and diversity to achieve a high Innovation Potential score. 
 
 
 8
@@ -71,15 +71,15 @@ Meanwhile, higher population density tends to generate environmental issues.
 8.1
 That's what we would like to avoid by increasing the energy and construction cost efficiency, traffic performance and solar access performance. 
 8.2
-These three aspects define the "Resource Efficiency" score. 
+These three aspects define the Resource Efficiency score. 
 
 
 9
 (highlight: radar-chart)
 9.0
-Both "Innovation Potential" score and "Resource Efficiency" score contribute to the "Total Score" according to the percentage importance you decided together earlier. 
+Both Innovation Potential score and Resource Efficiency score contribute to the Total Score according to the percentage importance you decided together earlier. 
 9.1
-So your goal is to create a city district which maximizes the performance of all five aspects thus the "Total Score". 
+So your goal is to create a city district which maximizes the performance of all five aspects thus the Total Score. 
 
 
 10
@@ -180,19 +180,19 @@ It's Lego time! Good Luck!
 (show timer of 15 minutes)
 (blank text, in case an accidental "next step")
 17.0
-" "
+...
 
 
 18
 (blank text, in case an accidental "next step")
 18.0
-" "
+...
 
 
 19
 (blank text, in case an accidental "next step")
 19.0
-" "
+...
 
 
 20
@@ -253,4 +253,4 @@ You have 15 minutes for this round. Let's do it!
 (show timer of 15 minutes)
 (blank text, in case an accidental "next step")
 24.0
-" "
+...
