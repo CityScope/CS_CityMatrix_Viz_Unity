@@ -26,137 +26,231 @@ And each of them has small, medium, and large unit types, which will attract peo
 (highlight: building types, Lego grid, and arrow 1)
 3.0
 You can add, remove or re-arrange the Lego blocks to create your city district. 
+3.1
+Once you make a change, the system will update according to your input.  
 
 
 4
 (highlight: building types, selection dock, and arrow 2)
+(highlight: selection dock, density slider, and arrow 3)
+(highlight: 3D city model)
 4.0
 Also, you can put one of the Lego brick into the dock highlighted here to select all the buildings which are the same type, 
+4.1
+and then operate the slider to change the building height, therefore the population density of these buildings. 
+4.2
+Notice how the building height changes accordingly in this three-dimensional representation of the city district on the vertical screen. 
 
 
 5
-(highlight: selection dock, density slider, and arrow 3)
+(highlight: people statistics)
 5.0
-and then operate the slider highlighted here to change the height, therefore the population density of these buildings.  
+The system will calculate how many and what type of people your city district will attract, highlighted here.
 
 
 6
-(highlight: 3D city model)
+(highlight: radar-chart)
 6.0
-Here highlighted on the screen, you will see a three-dimensional representation of the city district you created. 
+As well as the performance of the city district in five aspects, represented by this radar-chart: 
+6.1
+population density, experience diversity, energy and construction cost efficiency, traffic performance, and solar access performance. 
 
 
 7
-(highlight: people statistics)
+(highlight: radar-chart upper part)
 7.0
-Note that the system will calculate how many and what type of people your city district will attract, highlighted here.
+According to previous research, population density and diversity are the key factors contributing to the innovation potential of the city. 
+7.1
+So we want to maximize both the population density and diversity to achieve a high "Innovation Potential" score. 
 
 
 8
-(highlight: radar-chart)
+(highlight: radar-chart lower part)
 8.0
-As well as the performance of the city district in five aspects, represented by this radar-chart: 
+Meanwhile, higher population density tends to generate environmental issues. 
 8.1
-population density, population diversity, energy/construction cost efficiency, traffic performance, and solar access performance. 
+That's what we would like to avoid by increasing the energy and construction cost efficiency, traffic performance and solar access performance. 
+8.2
+These three aspects define the "Resource Efficiency" score. 
 
 
 9
-(highlight: radar-chart upper part)
+(highlight: radar-chart)
 9.0
-According to previous research, population density and diversity are the key factors contributing to the innovation potential of the city. 
+Both "Innovation Potential" score and "Resource Efficiency" score contribute to the "Total Score" according to the percentage importance you decided together earlier. 
 9.1
-So we want to maximize both the population density and diversity. 
+So your goal is to create a city district which maximizes the performance of all five aspects thus the "Total Score". 
 
 
 10
-(highlight: radar-chart lower part)
-10.0
-Meanwhile, higher population density tends to generate environmental issues. 
-10.1
-That's what we would like to avoid by increasing the energy/construction cost efficiency, traffic performance and solar access performance. 
-10.2
-So your goal is to create a city district which maximizes the performance of all five aspects. 
-
-
-11
 (highlight: Visualization slider, Lego grid with Viz, and arrow 4)
-11.0
+10.0
 To better understand the impact of your design to the city performance, 
-11.1
+10.1
 you can inspect each of the aspects by changing the visualization slider highlighted here. 
-11.2
+10.2
 When you slide the Lego brick on the slider to one of the items, you will see the correspondent heatmap of the performance of that aspect on the Lego grid. 
-11.3
+10.3
 Green is good. Red is bad. As simple as that! 
 
 
-12
+11
 (highlight: radar-chart "Population Density" part, viz slider "Population Density" part)
-12.0
+11.0
 First, let's look at the "Population Density". The heatmap reflects the number of the people in the building. 
-12.1
+11.1
 The greener, the more people in that building. 
+11.2
+For example, if you select the "Office Large" type and slide up the density, that area will get greener. 
+11.3
+You will also get a higher score on the "Population Density" axis on the radar-chart,  
+11.4
+since it reflects the total number of the people in the district. 
+
+
+
+12
+(highlight: radar-chart "Experience Diversity" part, viz slider "Experience Diversity" part)
+12.0
+Then, let's look at the "Experience Diversity". The heatmap reflects how mixed are the residential and office types, 
+12.1
+as well as the balance between the working and living. The greener, the more diverse. 
 12.2
-The "Population Density" axis on the radar-chart reflects the total number of the people in the district. 
+For example, if you select the "Office Small" type and slide up the density, some area will get greener, meaning a better diversity in that area. 
 12.3
-The higher the score, the denser this district's population is. 
+You will also get a higher score on the "Experience Diversity" axis on the radar-chart, 
+12.4
+since it reflects the overall diversity throughout the whole district you built. 
 
 
 13
-(highlight: radar-chart "Population Diversity" part, viz slider "Population Diversity" part)
+(highlight: radar-chart "Energy/Cost Efficiency" part, viz slider "Energy/Cost Efficiency" part)
 13.0
-Then, let's look at the "Population Diversity". The heatmap reflects how mixed are the residential and office types, 
+Move to "Energy and Cost Efficiency". The heatmap shows how much is the building energy consumption and building construction cost per person. 
 13.1
-as well as the balance between the working and living. The greener, the more diverse. 
+Normally The energy consumption and building construction cost per square meter are similar for any building, which means the more small unit residential or office buildings, the better this performance. 
 13.2
-The "Population Diversity" axis on radar-chart is the aggregated diversity throughout the whole district you built. 
+For example, if you add an "Office Small" in the lower-left courtyard, that area will get greener. 
 13.3
-The higher the score, the more diverse the population is.  
+You will also get a slightly higher score on the "Energy and Cost Efficiency" axis on the radar-chart, 
+13.4
+since it reflects how efficient the whole city district is. 
 
 
 14
-(highlight: radar-chart "Energy/Cost Efficiency" part, viz slider "Energy/Cost Efficiency" part)
+(highlight: radar-chart "Traffic Performance" part, viz slider "Traffic Performance" part)
 14.0
-Move to "Energy/Cost Efficiency". The heatmap shows how much is the building energy consumption and building construction cost per person. 
+Switch to "Traffic Performance". Assuming we are using a high efficient autonomous sharing mobility system. 
 14.1
-Normally The energy consumption and building construction cost per square meter are similar for any building, which means the more small unit residential or office buildings, the better this performance. 
+The heatmap here shows how much traffic volume is in the city district in one day.
 14.2
-The "Energy/Cost Efficiency" axis on radar-chart is the averaged cost and energy consumption per person for all the buildings. 
+For example, if you decrease the building height of "Office Small", the traffic around will improve. 
 14.3
-The higher the score, the more efficient the energy and the cost of the city district is. 
+You will also get a higher score on the "Traffic Performance" axis on the radar-chart. 
 
 
 15
-(highlight: radar-chart "Traffic Performance" part, viz slider "Traffic Performance" part)
+(highlight: radar-chart "Solar Access Performance" part, viz slider "Solar Access Performance" part)
 15.0
-Switch to "Traffic Performance". Assuming we are using a high efficient autonomous sharing mobility system,  
+Last, let's look at "Solar Access Performance". Assuming we want to fully utilize the solar energy on the roof top of all the buildings and have good sunlight in the courtyard.  
 15.1
-the heatmap here shows how much traffic volume is in the city district in one day.
+The heatmap shows how much solar radiation you can get in each area in the city district annually. The yellower the better, the bluer the worse. 
+15.1
+The symbol on the lower right corner shows the orientation of north. 
 15.2
-The "Traffic Performance" axis on radar-chart is overall traffic performance of the whole district you built. 
+For example, if you decrease the building height of "Office Large", the courtyard will get yellower, because it now has less shadow. 
 15.3
-A Higher score means less traffic. 
+You will also get a higher score on the "Solar Access Performance" axis on the radar-chart. 
 
 
 16
-(highlight: radar-chart "Solar Access Performance" part, viz slider "Solar Access Performance" part)
+(USER TEST STAGE ONE: NO AI ASSISTANT. mask: none; highlight: none)
 16.0
-Last, let's look at "Solar Access Performance". Assuming we want to fully utilize the solar energy on the roof top of all the buildings,  
+Now, you've been through the introduction of CityMatrix functionalities. 
 16.1
-the heatmap shows how much solar radiation you can get in each area in the city district annually. The greener the better. Less shadow from other buildings. 
+Again, your goal is work collaboratively to build a city district with these Lego bricks which maximize all five aspects of the city performance and the total score. 
 16.2
-The "Solar Access Performance" axis on radar-chart is overall solar energy this city district could gather annually. 
+You have 15 minutes for this round. 
 16.3
-The higher score, the better. 
+It's Lego time! Good Luck!
 
 
 17
-(USER TEST STAGE ONE: NO AI ASSISTANT. mask: none; highlight: none)
+(reset the city physically)
+(show timer of 15 minutes)
+(blank text, in case an accidental "next step")
 17.0
-Now, you've been through the introduction of CityMatrix functionalities. 
-17.1
-Again, your goal is work collaboratively to build a city district with these Lego bricks which maximize all five aspects of the city performance. 
-17.2
-You have 15 minutes for this round. 
-17.3
-It's Lego time! Good Luck! 
+" "
+
+
+18
+(blank text, in case an accidental "next step")
+18.0
+" "
+
+
+19
+(blank text, in case an accidental "next step")
+19.0
+" "
+
+
+20
+(Beginning of the AI introduction)
+20.0
+Hope you have had fun with the first round! 
+20.1
+From now on, I will try to give some help. 
+20.2
+Note that now on the table, you can see an annotation in orange. 
+20.3
+That is my suggestion of the most efficient next move to improve the score, given the current condition. 
+20.4
+The orange line in the rada-chart on the screen is the city performance you could get if you follow my instruction. 
+20.5
+The orange texts on the right side of all the scores illustrate the exact expected change on the score according to my suggestion. 
+20.6
+Whenever you make a move, I will give you a new suggestion based on the latest situation. 
+20.7
+Please try to follow my suggestion once or twice to get familiar. 
+
+
+21
+(highlight "AI Assistance")
+21.0
+Highlighted in the lower left side on the table, there are five switches that you can manipulate. 
+21.1
+Each of them indicates how much help do you want to get from me in the correspondent aspect of the city performances. 
+21.2
+Anytime in the next round, you can move the slider up and down to 0%, 50%, or 100%, according to your priority at the moment. 
+21.3
+I will update my suggestion every time you change them. 
+21.4
+Please give a try. 
+
+22
+(no highlight)
+22.0
+Lastly, I would like to remind you that you have the choice to accept or ignore my suggestion at each move. 
+22.1
+For the reason that my suggestions are solely based on the calculations in these five aspects of the city performances, 
+22.2
+while the city is a complex with much more to considerate. 
+
+
+23
+(no highlight)
+23.0
+Now, let's work together to make our city district even better! 
+23.1
+Hope my assistance helps.  
+23.2
+You have 15 minutes for this round. Let's do it! 
+
+
+24
+(reset the city physically)
+(show timer of 15 minutes)
+(blank text, in case an accidental "next step")
+24.0
+" "
