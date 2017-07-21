@@ -60,6 +60,7 @@ public class UIComponentOnOffCtrl : MonoBehaviour {
                 masks[1].SetActive(false); // mask radar-chart upper
                 masks[2].SetActive(false); // maskradar-chart lower
                 highlights[4].SetActive(true); // hightlight radar-chart axis 1
+                masks[0].SetActive(false); // mask city 3d
             }
             else if (intAIStep == 12)
             {
@@ -67,6 +68,7 @@ public class UIComponentOnOffCtrl : MonoBehaviour {
                 masks[1].SetActive(false); // mask radar-chart upper
                 masks[2].SetActive(false); // maskradar-chart lower
                 highlights[5].SetActive(true); // hightlight radar-chart axis 2
+                masks[0].SetActive(false); // mask city 3d
             }
             else if (intAIStep == 13)
             {
@@ -74,6 +76,7 @@ public class UIComponentOnOffCtrl : MonoBehaviour {
                 masks[1].SetActive(false); // mask radar-chart upper
                 masks[2].SetActive(false); // maskradar-chart lower
                 highlights[6].SetActive(true); // hightlight radar-chart axis 3
+                masks[0].SetActive(false); // mask city 3d
             }
             else if (intAIStep == 14)
             {
@@ -81,6 +84,7 @@ public class UIComponentOnOffCtrl : MonoBehaviour {
                 masks[1].SetActive(false); // mask radar-chart upper
                 masks[2].SetActive(false); // maskradar-chart lower
                 highlights[7].SetActive(true); // hightlight radar-chart axis 4
+                masks[0].SetActive(false); // mask city 3d
             }
             else if (intAIStep == 15)
             {
@@ -88,6 +92,7 @@ public class UIComponentOnOffCtrl : MonoBehaviour {
                 masks[1].SetActive(false); // mask radar-chart upper
                 masks[2].SetActive(false); // maskradar-chart lower
                 highlights[8].SetActive(true); // hightlight radar-chart axis 5
+                masks[0].SetActive(false); // mask city 3d
             }
             else if (intAIStep == 16)
             {

@@ -14,6 +14,7 @@ public class AISoundWave : MonoBehaviour
     public float Gain = 70.0f;
     public float MoveLeft = 200.0f;
     public float MoveDown = 100.0f;
+    public float MoveZ = -10.0f;
     public int sampleSize = 512;
     public GameObject SoundWaveBarPrefab;
 
@@ -39,7 +40,7 @@ public class AISoundWave : MonoBehaviour
             // left to right
             tempPlane = Instantiate(SoundWaveBarPrefab, tf);
             tempPlane.transform.localScale = new Vector3(Width, 1.0f, Width);
-            tempPlane.transform.localPosition = new Vector3(ii * Spacing - MoveLeft, -MoveDown, 0.0f);
+            tempPlane.transform.localPosition = new Vector3(ii * Spacing - MoveLeft, -MoveDown, MoveZ);
 
             visualTransforms[ii] = tempPlane.GetComponent<Transform>();
             visualTransforms[ii].parent = tf;
@@ -47,7 +48,7 @@ public class AISoundWave : MonoBehaviour
             // right to left
             tempPlane = Instantiate(SoundWaveBarPrefab, tf);
             tempPlane.transform.localScale = new Vector3(Width, 1.0f, Width);
-            tempPlane.transform.localPosition = new Vector3(-ii * Spacing + MoveLeft, -MoveDown, 0.0f);
+            tempPlane.transform.localPosition = new Vector3(-ii * Spacing + MoveLeft, -MoveDown, MoveZ);
 
             visualTransforms[ii + sampleSize / 4] = tempPlane.GetComponent<Transform>();
             visualTransforms[ii + sampleSize / 4].parent = tf;
