@@ -1,7 +1,7 @@
 0
 (mask: all; highlight: none)
 0.0
-Welcome to CityMatrix, an urban decision support system with an AI assistant. 
+Welcome to CityMatrix - an urban decision support system augmented by artificial intelligence. 
 0.1 
 I am your AI assistant, RZ-14. 
 
@@ -222,7 +222,7 @@ Highlighted in the lower left side of the table, there are five switches that yo
 21.1
 Each of them indicates how much help you want from me in the corresponding aspect of the city performance. 
 21.2
-Any time in the next round, you can move the slider up and down to 0%, 50%, or 100%, according to your priority at the moment. 
+Any time in the next round, you can move the slider up and down to ON, OFF, or 50%, according to your priority at the moment.                       
 21.3
 I will update my suggestion every time you change them. 
 21.4
