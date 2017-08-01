@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
+using System.Linq;
 using Crosstales.RTVoice;
 
 [RequireComponent(typeof(AudioSource))]
@@ -10,7 +12,7 @@ public class SpeakRTVoice : MonoBehaviour {
 
     public Text textToSpeak;
     public Button speakButton;
-    public string txtFilePathAIScript = "Resources/Data/AI Script Texts/AI Script.txt";
+    public TextAsset AiScript;
     public List<string> linesAIScript;
     public int lastStepInt;
     public int AIStep = 0;
@@ -26,7 +28,7 @@ public class SpeakRTVoice : MonoBehaviour {
         speakButton.onClick.AddListener(speakButtonOnClick);
 
         // read txt file to a string list
-        linesAIScript = readTextFile(txtFilePathAIScript);
+        linesAIScript = AiScript.text.Split('\n').ToList();
 
         // get last step int
         bool stepIntFound = true;
