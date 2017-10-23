@@ -5,30 +5,55 @@ using UnityEngine;
 public class CityParser : MonoBehaviour, IObservable<JsonCityMatrixMlai>, IObserver<string>
 {
 
-	public UdpListener UdpSubject;
+    public Scanners GridDecoder;
 
-	private UdpListener _prevSubject;
-	
-	private IList<IObserver<JsonCityMatrixMlai>> _observers = new List<IObserver<JsonCityMatrixMlai>>();
+    public UdpListener UdpSubject;
 
-	private IDisposable _unsubscriber;
-	
-	// Use this for initialization
-	void Start ()
-	{
-		this._unsubscriber = this.UdpSubject.Subscribe(this);
-		this._prevSubject = this.UdpSubject;
-	}
+    private UdpListener _prevSubject;
 
-	private void Update()
-	{
-		if (this.UdpSubject == this._prevSubject) return;
-		this._unsubscriber.Dispose();
-		this._unsubscriber = this.UdpSubject.Subscribe(this);
-		this._prevSubject = this.UdpSubject;
-	}
+    private IList<IObserver<JsonCityMatrixMlai>> _observers = new List<IObserver<JsonCityMatrixMlai>>();
 
-	public IDisposable Subscribe(IObserver<JsonCityMatrixMlai> observer)
+    private IDisposable _unsubscriber;
+
+    private JsonCityMatrixMlai packet;
+
+    // Use this for initialization
+    void Start()
+    {
+        this._unsubscriber = this.UdpSubject.Subscribe(this);
+        this._prevSubject = this.UdpSubject;
+    }
+
+    private void Update()
+    {
+		if(packet == null) return;
+        var hasChanged = false;
+        var grid = JsonCityMatrix.GetBuildingMap(packet.predict);
+        for (int i = 0; i < 30; i++)
+        {
+            for (int j = 0; j < 30; j++)
+            {
+				var pos = new Pos2D(i, j);
+				if(!grid.ContainsKey(pos)) continue;
+                hasChanged = hasChanged || grid[pos].type != GridDecoder.currentIds[i, j];
+                grid[new Pos2D(i, j)].type = GridDecoder.currentIds[i, j];
+            }
+        }
+        if (hasChanged)
+        {
+            foreach (var o in this._observers)
+            {
+                o.OnNext(packet);
+            }
+        }
+
+        if (this.UdpSubject == this._prevSubject) return;
+        this._unsubscriber.Dispose();
+        this._unsubscriber = this.UdpSubject.Subscribe(this);
+        this._prevSubject = this.UdpSubject;
+    }
+
+    public IDisposable Subscribe(IObserver<JsonCityMatrixMlai> observer)
     {
         // Check whether observer is already registered. If not, add it
         if (!this._observers.Contains(observer))
@@ -38,31 +63,30 @@ public class CityParser : MonoBehaviour, IObservable<JsonCityMatrixMlai>, IObser
         return new Unsubscriber<JsonCityMatrixMlai>(this._observers, observer);
     }
 
-	public void OnCompleted()
-	{
-		throw new NotImplementedException();
-	}
+    public void OnCompleted()
+    {
+        throw new NotImplementedException();
+    }
 
-	public void OnError(Exception exception)
-	{
-		throw new NotImplementedException();
-	}
+    public void OnError(Exception exception)
+    {
+        throw new NotImplementedException();
+    }
 
-	public void OnNext(string value)
-	{
-		JsonCityMatrixMlai packet;
-		try
-		{
-			packet = JsonUtility.FromJson<JsonCityMatrixMlai>(value);
-		}
-		catch (Exception e)
-		{
-			Debug.LogError(e);
-			return;
-		}
-		foreach (var o in this._observers) 
-		{
-			o.OnNext(packet);
-		}
-	}
+    public void OnNext(string value)
+    {
+        try
+        {
+            packet = JsonUtility.FromJson<JsonCityMatrixMlai>(value);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e);
+            return;
+        }
+        foreach (var o in this._observers)
+        {
+            o.OnNext(packet);
+        }
+    }
 }

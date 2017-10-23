@@ -10,6 +10,8 @@ public class CityView : MonoBehaviour
     public bool EnableAi;
     public bool RebuildOnValidate;
 
+    public bool TopperOnly;
+
     public GameObject BuildingChangeIndicator;
     public GameObject BuildingChangeArrowPrefab;
     public GameObject BuildingPrefab;
@@ -71,16 +73,20 @@ public class CityView : MonoBehaviour
                 Building newB = Instantiate(this.BuildingPrefab).GetComponent<Building>();
                 newB.transform.parent = this.transform;
                 newB.transform.localPosition = GetLocalPos(pos);
+                newB.transform.localEulerAngles = Vector3.zero;
                 newB.name = String.Format("Building {0}-{1}", pos.x, pos.y);
                 this._buildings.Add(pos, newB);
             }
 
             Building b = this._buildings[pos];
             b.State = GetBuildingType(jb.type);
-            
+
             if (b.State == Building.View.Building)
             {
-                b.Height = jsonCity.objects.densities[jb.type];
+                if (!TopperOnly)
+                {
+                    b.Height = jsonCity.objects.densities[jb.type];
+                }
                 b.TopperPrefab = this.TopperPrefabs[jb.type];
             }
         }
@@ -105,7 +111,10 @@ public class CityView : MonoBehaviour
             foreach (var jb in predictCity.grid.Where(b => b.type == dChange.Index))
             {
                 var b = this._buildings[new Pos2D(jb.x, jb.y)];
-                b.ShadowDelta = dChange.NewDensity - dChange.OldDensity;
+                if (!TopperOnly)
+                {
+                    b.ShadowDelta = dChange.NewDensity - dChange.OldDensity;
+                }
                 this._aiBuildings.Push(b);
             }
         }
@@ -119,7 +128,10 @@ public class CityView : MonoBehaviour
             if (indicator.State == Building.View.Building)
             {
                 indicator.TopperPrefab = this.TopperPrefabs[bChange.NewId];
-                indicator.Height = bChange.NewDensity;
+                if (!TopperOnly)
+                {
+                    indicator.Height = bChange.NewDensity;
+                }
             }
             indicator.transform.parent = this.BuildingChangeIndicator.transform;
             indicator.transform.localPosition = Vector3.zero;
@@ -128,7 +140,7 @@ public class CityView : MonoBehaviour
             arrow.StartBuilding = indicator;
             arrow.EndBuilding = b;
             arrow.transform.parent = this.BuildingChangeIndicator.transform;
-           
+
             this._aiBuildings.Push(b);
         }
         else

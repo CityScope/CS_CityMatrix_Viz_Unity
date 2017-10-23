@@ -277,6 +277,7 @@ public class Building : MonoBehaviour
         if (this._topper == null) return;
         int c = this._blocks.Count + this._shadowBlocks.Count;
         this._topper.transform.localPosition = GetTopperPos(c);
+        this._topper.transform.localEulerAngles = Vector3.zero;
     }
 
     private Vector3 GetPosOfBlock(int height)
