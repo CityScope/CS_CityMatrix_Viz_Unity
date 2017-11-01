@@ -435,6 +435,25 @@ public class Scanners : MonoBehaviour
         }
     }
 
+    public Color FindColor(GameObject scanner)
+    {
+        var scannerRenderer = scanner.GetComponent<Renderer>();
+        if (ScannerIsAboveTexture(scanner) && hitTex)
+        {
+            var texBounds = keystonedQuad.GetComponent<Renderer>().bounds;
+            var localScanPos = scanner.transform.position - texBounds.min;
+
+            Color pixel = hitTex.GetPixelBilinear(localScanPos.x / texBounds.size.x, localScanPos.z / texBounds.size.z);
+            scannerRenderer.material.color = pixel;
+            return pixel;
+        }
+        else
+        {
+            scannerRenderer.material.color = Color.magenta;
+            throw new ArgumentOutOfRangeException("Scanner is not over the texture");
+        }
+    }
+
     private bool ScannerIsAboveTexture(GameObject scanner)
     {
         var scannerPos = scanner.transform.position;
@@ -523,8 +542,7 @@ public class Scanners : MonoBehaviour
         {
             for (int y = 0; y < numOfScannersY; y++)
             {
-                _scanner = Instantiate(this.MarkerPrefab);
-                _scanner.name = "grid_" + y + numOfScannersX * x;
+                _scanner = MakeScanner("grid_" + y + numOfScannersX * x);
                 _scanner.transform.parent = _gridParent.transform;
                 _scanner.transform.localScale = new Vector3(_scannerScale, _scannerScale, _scannerScale);
                 float offset = keystonedQuad.GetComponent<Renderer>().bounds.size.x * 0.5f;
@@ -532,6 +550,13 @@ public class Scanners : MonoBehaviour
                 scannersList[x, y] = this._scanner;
             }
         }
+    }
+
+    public GameObject MakeScanner(string name = "scanner")
+    {
+        var scanner = Instantiate(this.MarkerPrefab);
+        scanner.name = name;
+        return scanner;
     }
 
     private void UpdateScannerObjects()
