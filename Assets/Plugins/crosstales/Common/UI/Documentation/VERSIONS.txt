@@ -1,0 +1,4 @@
+## Release notes "Crosstales UI"
+
+### 1.0.0 - 25.06.2017
+* Production release

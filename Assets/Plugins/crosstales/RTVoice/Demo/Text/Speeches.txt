@@ -1,0 +1,3 @@
+#Text;Output file (without extension);Voice name;Rate;Pitch;Volume
+Tower one;_Speeches/Tower01;Microsoft David Desktop;0.8;1.8;0.9
+Tower Two;_Speeches/Tower02;Microsoft Zira Desktop;1.25;0.5;0.8
