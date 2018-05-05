@@ -1,4 +1,4 @@
-# citymatrix-viz-unity
+# CityMatrix
 
 CityMatrix is an urban decision support system augmented with artificial intelligence, which is 'Ryan' Yan Zhang's Master thesis project at MIT Media Lab City Science group. 
 
