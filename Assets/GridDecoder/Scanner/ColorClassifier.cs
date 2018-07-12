@@ -32,9 +32,9 @@ public class ColorClassifier {
 	public ColorClassifier() {
 		sampleColors = new Dictionary<SampleColor, List<Vector3>>();
 		rgbColor = new Color[] {
-			new Color (1f, 1f, 1f),
-			new Color (0f, 0f, 0f),
-			new Color (1f, 0f, 0f)
+			new Color (1f, 1f, 1f), //White
+			new Color (0f, 0f, 0f), //Black
+			new Color (1f, 0f, 0f)  //Red
 		};
 
 		r = 0.01f;
@@ -134,7 +134,7 @@ public class ColorClassifier {
 			colorSpheres [i].transform.name = "Color sample + " + currColor;
 		}
 
-		Debug.Log ("Updated color plot.");
+		// Debug.Log ("Updated color plot.");
 	}
 
 	///////////////////////////////////////////////////////

@@ -22,7 +22,7 @@ public class Dock : LegoUI {
 				dockScanners[x, y].transform.parent = this.uiParent.transform;
 				dockScanners[x, y].transform.localScale = new Vector3 (_scannerScale, _scannerScale, _scannerScale);  
 				dockScanners[x, y].transform.localPosition = new Vector3 (x * _scannerScale * 2, 0.2f, y * _scannerScale * 2);
-				dockScanners[x, y].transform.Rotate (90, 0, 0); 
+				dockScanners[x, y].transform.Rotate (90, 0, 0);
 			}
 		}
 	}
@@ -32,13 +32,14 @@ public class Dock : LegoUI {
 	/// </summary>
 	public void UpdateDock() {
 		string key = "";
-		int currDockId = GameObject.Find ("ScannersParent").GetComponent<Scanners> ().FindCurrentId (key, 0, 0, ref dockScanners, false);
+		int currDockId = GameObject.Find("GridDecoder").GetComponentInChildren<Scanners>().FindCurrentId (key, 0, 0, ref dockScanners, false);
 
 		// Notify CityIO
 		if (dockId != currDockId) {
 			dockId = currDockId;
 			EventManager.TriggerEvent ("dockChange");
 			Debug.Log ("Dock ID changed to " + this.dockId);
+			GameObject.Find ("GridDecoder").GetComponentInChildren<Scanners>().RefreshDockText(this.dockId);
 		}
 	}
 

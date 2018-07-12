@@ -25,7 +25,7 @@ public class AutoIntensity : MonoBehaviour
     public Vector3 DayRotateSpeed;
     public Vector3 NightRotateSpeed;
 
-    float _skySpeed = 1;
+    float _skySpeed = 100;
 
 
     Light _mainLight;

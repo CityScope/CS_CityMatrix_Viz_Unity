@@ -19,43 +19,46 @@ using System.Linq;
 public class LegoSlider : LegoUI {
 	private GameObject sliderStartObject;
 	private GameObject sliderEndObject;
-
 	private GameObject[,] sliderScanners;
+	private SliderSettings settings;
+	private Vector3 startPos;
+	private Vector3 endPos;
 	private const int NUM_SCANNERS = 30;
-
-	private float length;
-
-	public int value;
+	private int numScanners;
+	public int value = -1;
 
 	// Number of ints the slider can return as valid values 
 	// i.e. 30 for 30 floors in building height calculation
 	public int range;
-
+	private int scaleFactor;
+	private float scannerScale;
+	private int sliderID;
 	private bool debug = false;
 	private bool needsUpdate;
 
 	// Current reference value the slider should track
 	private int REFERENCE_COLOR = (int) ColorClassifier.SampleColor.RED;
-
 	// Stores indices of scanner objects that have the slider's reference color
 	List<int> refColorIndex;
-
 	// Stores currently scanned color IDs (from ColorClassifier.SampleColors)
 	int[] currIds;
+
 
 	/// <summary>
 	/// Creates the slider.
 	/// Compute distance to two endpoints from a given color slider object.
 	/// </summary>
-	public LegoSlider(GameObject parentObject, float _scannerScale, int range) {
-		this.range = range;
-		this.value = 0; // for init value
+	public LegoSlider(GameObject parentObject, float _scannerScale) {
+		// this.numScanners = numScanners;
+		// this.range = range;
+		// this.startPos = startPos;
+		// this.endPos = endPos;
+		this.value = -1; // for init value
+		this.scannerScale = _scannerScale;
 
 		CreateScannerParent ("Slider parent", parentObject);
-		CreateSlider (_scannerScale);
 
 		refColorIndex = new List<int> ();
-		currIds = new int[sliderScanners.GetLength(1)];
 	}
 
 	/// <summary>
@@ -65,14 +68,14 @@ public class LegoSlider : LegoUI {
 		if (sliderScanners.GetLength (1) == 0)
 			return;
 
-		if (sliderStartObject.transform.position != sliderScanners [0, 0].transform.position || sliderEndObject.transform.position != sliderScanners [0, NUM_SCANNERS-1].transform.position)
+		if (sliderStartObject.transform.position != sliderScanners [0, 0].transform.position || sliderEndObject.transform.position != sliderScanners [0, numScanners-1].transform.position)
 			CreateSlider (sliderScanners [0, 0].transform.localScale.x);
 
 		needsUpdate = false;
 		refColorIndex.Clear ();
 
 		for (int i = 0; i < sliderScanners.GetLength(1); i++) {
-			int currId = GameObject.Find ("ScannersParent").GetComponent<Scanners> ().FindColor (0, i, ref sliderScanners, false);
+			int currId = GameObject.Find ("GridDecoder").GetComponentInChildren<Scanners>().FindColor (0, i, ref sliderScanners, false);
 			if (currIds[i] != currId) {
 				currIds [i] = currId;
 				needsUpdate = true;
@@ -96,7 +99,12 @@ public class LegoSlider : LegoUI {
 	/// <param name="refColorIndex">Reference color index.</param>
 	private void RecomputeSliderValue (ref List<int> refColorIndex) {
 		int refIndex = refColorIndex.Sum () / refColorIndex.Count;
-		int newValue = (int) (((float) refIndex / (float) NUM_SCANNERS) * (float)this.range);
+		int newValue = 0;
+		if (this.numScanners == this.range)
+			newValue = refColorIndex.Max() + 1;
+		else
+			newValue = (int) (((float) refIndex / (float) this.numScanners) * (float)this.range);
+		// int newValue = refColorIndex.Max() + 1;
 
 		if (debug) {
 			sliderScanners [0, refIndex].GetComponent<Renderer> ().material.color = Color.cyan;
@@ -107,27 +115,32 @@ public class LegoSlider : LegoUI {
 			this.value = newValue;
 			// Notify CityIO
 			EventManager.TriggerEvent("sliderChange");
-			Debug.Log ("Slider value changed to " + this.value);
+			// Debug.Log ("Slider value changed to " + this.value);
+			GameObject.Find ("GridDecoder").GetComponentInChildren<Scanners>().RefreshSliderUI(sliderID, this.value);
 		}
 
 	}
 
 	private void CreateSlider(float _scannerScale) {
 		if (sliderScanners == null) {
-			sliderScanners = new GameObject[1, NUM_SCANNERS];
+			sliderScanners = new GameObject[1, numScanners];
 
-			Vector3 startPos = new Vector3(0, 0, 0);
-			Vector3 endPos = new Vector3 (0, 0, 0.5f);
+			// Vector3 startPos = new Vector3(0, 0f, 0);
+			// Vector3 endPos = new Vector3 (0, 0f, 0.186f);
 
 			CreateEndObject (ref sliderStartObject, startPos, _scannerScale, "start_");
 			CreateEndObject (ref sliderEndObject, endPos, _scannerScale, "end_");
+			sliderStartObject.transform.localPosition += new Vector3(0f,-0.05f,0f);
+			sliderEndObject.transform.localPosition += new Vector3(0f,-0.05f,0f);
+			sliderStartObject.GetComponent<Renderer>().material.color = Color.magenta;
+			sliderEndObject.GetComponent<Renderer>().material.color = Color.magenta;
 		}
 			
 		Vector3 dir = sliderEndObject.transform.position - sliderStartObject.transform.position;
-		Vector3 offsetVector = dir / NUM_SCANNERS;
+		Vector3 offsetVector = dir / (numScanners - 1);
 
 		string name = "";
-		for (int i = 0; i < NUM_SCANNERS; i++) {
+		for (int i = 0; i < numScanners; i++) {
 			name = "slider_" + i;
 			CreateEndObject (ref sliderScanners [0,i], sliderStartObject.transform.localPosition + offsetVector * i, _scannerScale, name);
 		}
@@ -154,6 +167,30 @@ public class LegoSlider : LegoUI {
 	/////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////
 
+
+	public SliderSettings GetSliderSettings() {
+		this.settings.sliderPosition = this.uiParent.transform.localPosition;
+		this.settings.numScanners = this.numScanners;
+		this.settings.range = this.range;
+		this.settings.startPos = this.startPos;
+		this.settings.endPos = this.endPos;
+		this.settings.scaleFactor = this.scaleFactor;
+		return this.settings;
+	}
+
+	public void SetSliderSettings(int i,SliderSettings settings) {
+		this.sliderID = i;
+		this.settings = settings;
+		this.uiParent.transform.localPosition = settings.sliderPosition;
+		this.numScanners = settings.numScanners;
+		this.range = settings.range;
+		this.startPos = settings.startPos;
+		this.endPos = settings.endPos;
+		this.scaleFactor = settings.scaleFactor;
+		this.scannerScale /= scaleFactor;
+		CreateSlider (scannerScale);
+		currIds = new int[sliderScanners.GetLength(1)];
+	}
 	public int GetSliderValue() {
 		return (int) this.value;
 	}

@@ -281,7 +281,7 @@ public class KeystoneController : MonoBehaviour
 		if (Input.GetKeyDown (KeyCode.LeftControl))
 			speed *= 10;
 		else if (Input.GetKeyDown (KeyCode.LeftAlt))
-			speed *= 0.1f; 
+			speed *= 0.1f;
 
 		var v = vertices [selectedCorner];
 

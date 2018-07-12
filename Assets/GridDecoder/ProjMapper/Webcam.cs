@@ -7,15 +7,34 @@ public class Webcam : MonoBehaviour
   	public static WebCamTexture webcamera;
 	private Texture originalTexture;
 	public GameObject webcamQuad;
+    private Vector3[] vertices;
+    
+    void start()
+    {
+        vertices = new Vector3[] {new Vector3(-1, -1, 0), new Vector3(-1, 1, 0), new Vector3(1, 1, 0), new Vector3(1, -1, 0)};
+    }
 
     void OnEnable()
     {
 		if (webcamera == null) {
-			string webcamName = WebCamTexture.devices [0].name;
+            if (WebCamTexture.devices.Length == 0)
+            {
+                #if UNITY_EDITOR
+                    // Application.Quit() does not work in the editor so
+                    // UnityEditor.EditorApplication.isPlaying need to be set to false to end the game
+                    UnityEditor.EditorApplication.isPlaying = false;
+                #else
+                    Application.Quit();
+                #endif
+            }
+            else
+            {
+			string webcamName = WebCamTexture.devices[0].name;
 			webcamera = new WebCamTexture (webcamName); //SET up the cam
 			Debug.Log("Webcam texture set from " + webcamName);
 
 			Setup();
+            }
 		}
 		else {
 			Play ();
