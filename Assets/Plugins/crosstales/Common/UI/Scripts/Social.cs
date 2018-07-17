@@ -5,30 +5,35 @@ namespace Crosstales.UI
     /// <summary>Crosstales social media links.</summary>
     public class Social : MonoBehaviour
     {
+
+        #region Public methods
+
         public void Facebook()
         {
-            Application.OpenURL("https://www.facebook.com/crosstales/");
+            Application.OpenURL(Common.Util.BaseConstants.ASSET_SOCIAL_FACEBOOK);
         }
 
         public void Twitter()
         {
-            Application.OpenURL("https://twitter.com/crosstales");
+            Application.OpenURL(Common.Util.BaseConstants.ASSET_SOCIAL_TWITTER);
         }
 
         public void LinkedIn()
         {
-            Application.OpenURL("https://www.linkedin.com/company/crosstales");
+            Application.OpenURL(Common.Util.BaseConstants.ASSET_SOCIAL_LINKEDIN);
         }
 
         public void Xing()
         {
-            Application.OpenURL("https://www.xing.com/companies/crosstales");
+            Application.OpenURL(Common.Util.BaseConstants.ASSET_SOCIAL_XING);
         }
 
         public void Youtube()
         {
-            Application.OpenURL("https://www.youtube.com/c/Crosstales");
+            Application.OpenURL(Common.Util.BaseConstants.ASSET_SOCIAL_YOUTUBE);
         }
+
+        #endregion
     }
 }
-// © 2017 crosstales LLC (https://www.crosstales.com)
+// © 2017-2018 crosstales LLC (https://www.crosstales.com)

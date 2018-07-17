@@ -845,7 +845,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\xA9 2015-2017 by crosstales LLC"
+  m_Text: "\xA9 2015-2018 by crosstales LLC"
 --- !u!114 &11413154
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2250,7 +2250,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Speed: 3
-  Dependency: {fileID: 0}
+  Dependencies: []
 --- !u!114 &11490890
 MonoBehaviour:
   m_ObjectHideFlags: 1

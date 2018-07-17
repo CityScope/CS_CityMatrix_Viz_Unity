@@ -28,7 +28,7 @@ GameObject:
   - 23: {fileID: 2378036}
   - 114: {fileID: 11465356}
   - 114: {fileID: 11459842}
-  - 114: {fileID: 11474704}
+  - 114: {fileID: 11447988}
   m_Layer: 0
   m_Name: CTCube2
   m_TagString: Untagged
@@ -238,10 +238,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 181782}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e22c52a914b5af4181d07cc2380b0bd, type: 3}
+  m_Script: {fileID: 1118156796, guid: 59ec414da56d5b141a060ad983746918, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ChangeInterval: {x: 2, y: 10}
+  ChangeInterval: {x: 5, y: 15}
+  Saturation: 1
+  Value: 1
+  Opacity: 1
+  ChangeMaterial: 0
+  Material: {fileID: 0}
+  ColorRange: {x: 0, y: 360}
+  GrayScale: 0
 --- !u!114 &11414106
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -250,11 +257,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 113888}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e24689fb4fd137c479e49c1ac4b178ba, type: 3}
+  m_Script: {fileID: 1180380308, guid: 59ec414da56d5b141a060ad983746918, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Speed: {x: 10, y: 10, z: 10}
-  ChangeInterval: {x: 10, y: 25}
+  ChangeInterval: {x: 10, y: 20}
 --- !u!114 &11418908
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -263,13 +270,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 141778}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fd4df9807edd164f874764abe8da940, type: 3}
+  m_Script: {fileID: 156830345, guid: 59ec414da56d5b141a060ad983746918, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ScaleMin: {x: 0.1, y: 0.1, z: 0.1}
-  ScaleMax: {x: 2, y: 2, z: 2}
+  ScaleMax: {x: 3, y: 3, z: 3}
   Uniform: 1
-  ChangeInterval: {x: 4, y: 10}
+  ChangeInterval: {x: 5, y: 15}
 --- !u!114 &11420314
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -278,11 +285,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 141778}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e24689fb4fd137c479e49c1ac4b178ba, type: 3}
+  m_Script: {fileID: 1180380308, guid: 59ec414da56d5b141a060ad983746918, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Speed: {x: 15, y: 15, z: 15}
-  ChangeInterval: {x: 7, y: 18}
+  ChangeInterval: {x: 10, y: 20}
 --- !u!114 &11442622
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -291,13 +298,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 181782}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fd4df9807edd164f874764abe8da940, type: 3}
+  m_Script: {fileID: 156830345, guid: 59ec414da56d5b141a060ad983746918, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   ScaleMin: {x: 0.1, y: 0.1, z: 0.1}
   ScaleMax: {x: 3, y: 3, z: 3}
   Uniform: 1
-  ChangeInterval: {x: 4, y: 10}
+  ChangeInterval: {x: 5, y: 15}
+--- !u!114 &11447988
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 122746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 156830345, guid: 59ec414da56d5b141a060ad983746918, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ScaleMin: {x: 0.1, y: 0.1, z: 0.1}
+  ScaleMax: {x: 3, y: 3, z: 3}
+  Uniform: 1
+  ChangeInterval: {x: 5, y: 15}
 --- !u!114 &11458952
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -306,10 +328,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 141778}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e22c52a914b5af4181d07cc2380b0bd, type: 3}
+  m_Script: {fileID: 1118156796, guid: 59ec414da56d5b141a060ad983746918, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ChangeInterval: {x: 2, y: 10}
+  ChangeInterval: {x: 5, y: 15}
+  Saturation: 1
+  Value: 1
+  Opacity: 1
+  ChangeMaterial: 0
+  Material: {fileID: 0}
+  ColorRange: {x: 0, y: 360}
+  GrayScale: 0
 --- !u!114 &11459842
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -318,11 +347,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 122746}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e24689fb4fd137c479e49c1ac4b178ba, type: 3}
+  m_Script: {fileID: 1180380308, guid: 59ec414da56d5b141a060ad983746918, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Speed: {x: 15, y: 15, z: 15}
-  ChangeInterval: {x: 7, y: 18}
+  ChangeInterval: {x: 10, y: 20}
 --- !u!114 &11465356
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -331,25 +360,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 122746}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e22c52a914b5af4181d07cc2380b0bd, type: 3}
+  m_Script: {fileID: 1118156796, guid: 59ec414da56d5b141a060ad983746918, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ChangeInterval: {x: 2, y: 10}
---- !u!114 &11474704
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 122746}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fd4df9807edd164f874764abe8da940, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ScaleMin: {x: 0.1, y: 0.1, z: 0.1}
-  ScaleMax: {x: 3, y: 3, z: 3}
-  Uniform: 1
-  ChangeInterval: {x: 4, y: 10}
+  ChangeInterval: {x: 5, y: 15}
+  Saturation: 1
+  Value: 1
+  Opacity: 1
+  ChangeMaterial: 0
+  Material: {fileID: 0}
+  ColorRange: {x: 0, y: 360}
+  GrayScale: 0
 --- !u!114 &11479074
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -358,11 +379,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 181782}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e24689fb4fd137c479e49c1ac4b178ba, type: 3}
+  m_Script: {fileID: 1180380308, guid: 59ec414da56d5b141a060ad983746918, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Speed: {x: 15, y: 15, z: 15}
-  ChangeInterval: {x: 7, y: 18}
+  ChangeInterval: {x: 10, y: 20}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

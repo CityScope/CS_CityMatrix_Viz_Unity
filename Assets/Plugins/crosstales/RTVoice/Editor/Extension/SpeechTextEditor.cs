@@ -42,7 +42,7 @@ namespace Crosstales.RTVoice.EditorExtension
             {
                 if (!string.IsNullOrEmpty(script.Text))
                 {
-                    if (Speaker.isTTSAvailable)
+                    if (Speaker.isTTSAvailable && EditorHelper.isRTVoiceInScene)
                     {
                         GUILayout.Label("Test-Drive", EditorStyles.boldLabel);
 
@@ -59,14 +59,12 @@ namespace Crosstales.RTVoice.EditorExtension
                                     if (GUILayout.Button(new GUIContent(" Speak", EditorHelper.Icon_Speak, "Speaks the text with the selected voice and settings.")))
                                     {
                                         script.Speak();
-                                        GAApi.Event(typeof(SpeechTextEditor).Name, "Speak");
                                     }
 
                                     GUI.enabled = Speaker.isSpeaking;
                                     if (GUILayout.Button(new GUIContent(" Silence", EditorHelper.Icon_Silence, "Silence the active speaker.")))
                                     {
                                         script.Silence();
-                                        GAApi.Event(typeof(SpeechTextEditor).Name, "Silence");
                                     }
                                     GUI.enabled = true;
                                 }
@@ -119,4 +117,4 @@ namespace Crosstales.RTVoice.EditorExtension
         #endregion
     }
 }
-// © 2016-2017 crosstales LLC (https://www.crosstales.com)
+// © 2016-2018 crosstales LLC (https://www.crosstales.com)

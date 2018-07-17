@@ -38,10 +38,7 @@ namespace Crosstales.RTVoice.Demo
             if (PanelPersonB != null)
                 baseColorB = PanelPersonB.color;
 
-            if (!Helper.hasBuiltInTTS)
-            {
-                Speaker.isMaryMode = true;
-            }
+            Speaker.isMaryMode = !Helper.hasBuiltInTTS;
         }
 
         public void Update()
@@ -108,12 +105,6 @@ namespace Crosstales.RTVoice.Demo
                 if (DialogScript.AudioPersonB != null)
                     DialogScript.AudioPersonB.Stop();
 
-                if (DialogScript.VisualsA != null)
-                    DialogScript.VisualsA.SetActive(false);
-
-                if (DialogScript.VisualsB != null)
-                    DialogScript.VisualsB.SetActive(false);
-
                 DialogScript.Running = false;
             }
 
@@ -162,7 +153,17 @@ namespace Crosstales.RTVoice.Demo
             DialogScript.VolumeB = value;
         }
 
+        public void GenderAChanged(System.Int32 index)
+        {
+            DialogScript.GenderA = (Model.Enum.Gender)index;
+        }
+
+        public void GenderBChanged(System.Int32 index)
+        {
+            DialogScript.GenderB = (Model.Enum.Gender)index;
+        }
+
         #endregion
     }
 }
-// © 2015-2017 crosstales LLC (https://www.crosstales.com)
+// © 2015-2018 crosstales LLC (https://www.crosstales.com)

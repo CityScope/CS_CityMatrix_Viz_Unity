@@ -95,29 +95,29 @@ namespace Crosstales.RTVoice.EditorUtil
         {
             initAssetPath();
 
-            if (Util.CTPlayerPrefs.HasKey(EditorConstants.KEY_UPDATE_CHECK))
+            if (Common.Util.CTPlayerPrefs.HasKey(EditorConstants.KEY_UPDATE_CHECK))
             {
-                UPDATE_CHECK = Util.CTPlayerPrefs.GetBool(EditorConstants.KEY_UPDATE_CHECK);
+                UPDATE_CHECK = Common.Util.CTPlayerPrefs.GetBool(EditorConstants.KEY_UPDATE_CHECK);
             }
 
-            if (Util.CTPlayerPrefs.HasKey(EditorConstants.KEY_REMINDER_CHECK))
+            if (Common.Util.CTPlayerPrefs.HasKey(EditorConstants.KEY_REMINDER_CHECK))
             {
-                REMINDER_CHECK = Util.CTPlayerPrefs.GetBool(EditorConstants.KEY_REMINDER_CHECK);
+                REMINDER_CHECK = Common.Util.CTPlayerPrefs.GetBool(EditorConstants.KEY_REMINDER_CHECK);
             }
 
-            if (Util.CTPlayerPrefs.HasKey(EditorConstants.KEY_TELEMETRY))
+            if (Common.Util.CTPlayerPrefs.HasKey(EditorConstants.KEY_TELEMETRY))
             {
-                TELEMETRY = Util.CTPlayerPrefs.GetBool(EditorConstants.KEY_TELEMETRY);
+                TELEMETRY = Common.Util.CTPlayerPrefs.GetBool(EditorConstants.KEY_TELEMETRY);
             }
 
-            if (Util.CTPlayerPrefs.HasKey(EditorConstants.KEY_PREFAB_AUTOLOAD))
+            if (Common.Util.CTPlayerPrefs.HasKey(EditorConstants.KEY_PREFAB_AUTOLOAD))
             {
-                PREFAB_AUTOLOAD = Util.CTPlayerPrefs.GetBool(EditorConstants.KEY_PREFAB_AUTOLOAD);
+                PREFAB_AUTOLOAD = Common.Util.CTPlayerPrefs.GetBool(EditorConstants.KEY_PREFAB_AUTOLOAD);
             }
 
-            if (Util.CTPlayerPrefs.HasKey(EditorConstants.KEY_HIERARCHY_ICON))
+            if (Common.Util.CTPlayerPrefs.HasKey(EditorConstants.KEY_HIERARCHY_ICON))
             {
-                HIERARCHY_ICON = Util.CTPlayerPrefs.GetBool(EditorConstants.KEY_HIERARCHY_ICON);
+                HIERARCHY_ICON = Common.Util.CTPlayerPrefs.GetBool(EditorConstants.KEY_HIERARCHY_ICON);
             }
 
             isLoaded = true;
@@ -126,13 +126,13 @@ namespace Crosstales.RTVoice.EditorUtil
         /// <summary>Saves all changable variables.</summary>
         public static void Save()
         {
-            Util.CTPlayerPrefs.SetBool(EditorConstants.KEY_UPDATE_CHECK, UPDATE_CHECK);
-            Util.CTPlayerPrefs.SetBool(EditorConstants.KEY_REMINDER_CHECK, REMINDER_CHECK);
-            Util.CTPlayerPrefs.SetBool(EditorConstants.KEY_TELEMETRY, TELEMETRY);
-            Util.CTPlayerPrefs.SetBool(EditorConstants.KEY_PREFAB_AUTOLOAD, PREFAB_AUTOLOAD);
-            Util.CTPlayerPrefs.SetBool(EditorConstants.KEY_HIERARCHY_ICON, HIERARCHY_ICON);
+            Common.Util.CTPlayerPrefs.SetBool(EditorConstants.KEY_UPDATE_CHECK, UPDATE_CHECK);
+            Common.Util.CTPlayerPrefs.SetBool(EditorConstants.KEY_REMINDER_CHECK, REMINDER_CHECK);
+            Common.Util.CTPlayerPrefs.SetBool(EditorConstants.KEY_TELEMETRY, TELEMETRY);
+            Common.Util.CTPlayerPrefs.SetBool(EditorConstants.KEY_PREFAB_AUTOLOAD, PREFAB_AUTOLOAD);
+            Common.Util.CTPlayerPrefs.SetBool(EditorConstants.KEY_HIERARCHY_ICON, HIERARCHY_ICON);
 
-            Util.CTPlayerPrefs.Save();
+            Common.Util.CTPlayerPrefs.Save();
         }
 
         #endregion
@@ -164,7 +164,7 @@ namespace Crosstales.RTVoice.EditorUtil
                     }
 
                     //Debug.LogWarning("PATH : " + assetPath);
-                    Util.CTPlayerPrefs.SetString(Util.Constants.KEY_ASSET_PATH, assetPath);
+                    Common.Util.CTPlayerPrefs.SetString(Util.Constants.KEY_ASSET_PATH, assetPath);
                 }
                 catch (System.Exception ex)
                 {
@@ -174,4 +174,4 @@ namespace Crosstales.RTVoice.EditorUtil
         }
     }
 }
-// © 2017 crosstales LLC (https://www.crosstales.com)
+// © 2017-2018 crosstales LLC (https://www.crosstales.com)

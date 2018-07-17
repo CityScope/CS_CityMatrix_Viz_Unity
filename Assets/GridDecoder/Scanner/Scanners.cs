@@ -174,8 +174,8 @@ public class Scanners : MonoBehaviour
     /// </summary>
     void Update()
     {
-        if (_useWebcam || shouldReassignTexture)
-            AssignRenderTexture();
+        // if (_useWebcam || shouldReassignTexture)
+        //     AssignRenderTexture();
         UpdateScanners();
         _gridParent.transform.localPosition = new Vector3(0,0,0);
         onKeyPressed();

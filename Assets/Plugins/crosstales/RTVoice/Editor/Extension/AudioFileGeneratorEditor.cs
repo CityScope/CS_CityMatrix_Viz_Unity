@@ -34,7 +34,7 @@ namespace Crosstales.RTVoice.EditorExtension
             {
                 if (script.TextFiles != null && script.TextFiles.Length > 0)
                 {
-                    if (Speaker.isTTSAvailable)
+                    if (Speaker.isTTSAvailable && EditorHelper.isRTVoiceInScene)
                     {
                         GUILayout.Label("Generate Audio Files", EditorStyles.boldLabel);
 
@@ -105,4 +105,4 @@ namespace Crosstales.RTVoice.EditorExtension
     */
     }
 }
-// © 2017 crosstales LLC (https://www.crosstales.com)
+// © 2017-2018 crosstales LLC (https://www.crosstales.com)

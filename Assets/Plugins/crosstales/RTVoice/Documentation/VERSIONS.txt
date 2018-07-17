@@ -1,5 +1,55 @@
 ﻿# RT-Voice - Release notes
 
+## 2.9.8 - 05.06.2018
+* WSA (PRO only):
+   * SSML support added
+   * pitch added
+   * rate added
+   * volume added
+* Speaker: added parameter "isFuzzy" to all VoicesForXY-methods
+* VoiceAlias improved
+* Demo scenes improved (gender added)
+* Editor integration improved
+* Android: gender matching added
+* Windows: SSML improved
+
+## 2.9.7 - 04.04.2018
+* Fix for MaryTTS (was always disabled in play-mode)
+* New class "ChangeGender.cs" added (useful for eSpeak)
+* Gender-mapping for:
+   * iOS (11.0)
+   * macOS (10.13)
+   * WSA (UWP)
+* Speaker: "VoicesForGender" and "VoiceForGender" added
+* eSpeak integration improved - now are all modifiers (m1-m6, f1-f4, croak, whisper) available!
+
+## 2.9.6 - 25.03.2018
+* Provider for Linux added (works also on Windows and macOS, see option 'eSpeak' in Speaker)!
+* Delegates moved to own class "Delegates.cs"
+* Providers implement now the interface "IVoiceProvider.cs"
+* Voice: Gender is now an enum
+* VoiceAlias added
+* Speaker: Streamed and Compressed added for AudioClips
+
+## 2.9.5 - 21.02.2018
+* Windows and macOS: Processes fixed (exit condition)
+* Official support for Unity 2018
+* Common 1.2.5 added
+
+## 2.9.4 - 08.12.2018
+* Latency of the Speak-call reduced
+* UnityEditor removed from DLL
+* Common 1.2.1 added
+
+## 2.9.3 - 22.12.2017
+* Asset moved to "Plugins"
+* Windows and macOS provider improved
+* AudioFileGenerator: output sample rate, bits and channels added for Windows
+* VoiceProviderMary: Text type added
+* UpdateCheck improved
+* NYCheck added
+* Code cleanup
+
 ## 2.9.2 - 04.12.2017
 * "Dont Destroy" added to Speaker
 * BaseVoiceProvider and VoiceProviderWindows: "SpeakNative" improved

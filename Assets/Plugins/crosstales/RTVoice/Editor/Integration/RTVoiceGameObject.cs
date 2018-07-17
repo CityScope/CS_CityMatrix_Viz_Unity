@@ -12,7 +12,6 @@ namespace Crosstales.RTVoice.EditorIntegration
         private static void AddRTVoice()
         {
             EditorHelper.InstantiatePrefab(Util.Constants.RTVOICE_SCENE_OBJECT_NAME);
-            GAApi.Event(typeof(RTVoiceGameObject).Name, "Add " + Util.Constants.RTVOICE_SCENE_OBJECT_NAME);
         }
 
         [MenuItem("GameObject/" + Util.Constants.ASSET_NAME + "/" + Util.Constants.RTVOICE_SCENE_OBJECT_NAME, true)]
@@ -25,43 +24,37 @@ namespace Crosstales.RTVoice.EditorIntegration
         private static void AddAudioFileGenerator()
         {
             EditorHelper.InstantiatePrefab("AudioFileGenerator");
-            GAApi.Event(typeof(RTVoiceGameObject).Name, "Add AudioFileGenerator");
         }
 
         [MenuItem("GameObject/" + Util.Constants.ASSET_NAME + "/SpeechText", false, EditorHelper.GO_ID + 2)]
         private static void AddSpeechText()
         {
             EditorHelper.InstantiatePrefab("SpeechText");
-            GAApi.Event(typeof(RTVoiceGameObject).Name, "Add SpeechText");
         }
 
         [MenuItem("GameObject/" + Util.Constants.ASSET_NAME + "/Sequencer", false, EditorHelper.GO_ID + 3)]
         private static void AddSequencer()
         {
             EditorHelper.InstantiatePrefab("Sequencer");
-            GAApi.Event(typeof(RTVoiceGameObject).Name, "Add Sequencer");
         }
 
         [MenuItem("GameObject/" + Util.Constants.ASSET_NAME + "/TextFileSpeaker", false, EditorHelper.GO_ID + 4)]
         private static void AddTextFileSpeaker()
         {
             EditorHelper.InstantiatePrefab("TextFileSpeaker");
-            GAApi.Event(typeof(RTVoiceGameObject).Name, "Add TextFileSpeaker");
         }
 
         [MenuItem("GameObject/" + Util.Constants.ASSET_NAME + "/Loudspeaker", false, EditorHelper.GO_ID + 5)]
         private static void AddLoudspeaker()
         {
             EditorHelper.InstantiatePrefab("Loudspeaker");
-            GAApi.Event(typeof(RTVoiceGameObject).Name, "Add Loudspeaker");
         }
 
         [MenuItem("GameObject/" + Util.Constants.ASSET_NAME + "/VoiceInitalizer", false, EditorHelper.GO_ID + 6)]
         private static void AddVoiceInitalizer()
         {
             EditorHelper.InstantiatePrefab("VoiceInitalizer");
-            GAApi.Event(typeof(RTVoiceGameObject).Name, "Add VoiceInitalizer");
         }
     }
 }
-// © 2017 crosstales LLC (https://www.crosstales.com)
+// © 2017-2018 crosstales LLC (https://www.crosstales.com)

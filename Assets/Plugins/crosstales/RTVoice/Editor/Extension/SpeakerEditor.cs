@@ -26,7 +26,13 @@ namespace Crosstales.RTVoice.EditorExtension
         private string maryTTSUser;
         private string maryTTSPassword;
         private Model.Enum.MaryTTSType maryTTSType;
+
+        private bool eSpeakMode;
+        private Model.Enum.ESpeakModifiers eSpeakModifier;
+
         private bool autoClearTags;
+        private bool streamed;
+        private bool compressed;
         private bool silenceOnDisable;
         private bool silenceOnFocusLost;
         private bool dontDestroy;
@@ -51,11 +57,11 @@ namespace Crosstales.RTVoice.EditorExtension
         {
             script = (Speaker)target;
 
-            maryTTSMode = script.MaryTTSMode;
-            maryTTSUrl = script.MaryTTSUrl;
-            maryTTSPort = script.MaryTTSPort;
-            maryTTSUser = script.MaryTTSUser;
-            maryTTSPassword = script.MaryTTSPassword;
+            //maryTTSMode = script.MaryTTSMode;
+            //maryTTSUrl = script.MaryTTSUrl;
+            //maryTTSPort = script.MaryTTSPort;
+            //maryTTSUser = script.MaryTTSUser;
+            //maryTTSPassword = script.MaryTTSPassword;
         }
 
         public void OnDisable()
@@ -83,8 +89,12 @@ namespace Crosstales.RTVoice.EditorExtension
             if (maryTTSMode != script.MaryTTSMode)
             {
                 serializedObject.FindProperty("MaryTTSMode").boolValue = maryTTSMode;
-                Speaker.isMaryMode = maryTTSMode;
+                serializedObject.ApplyModifiedProperties();
+
+                voiceIndex = 0;
+
                 Speaker.ReloadProvider();
+                //Speaker.isMaryMode = maryTTSMode;
             }
 
             EditorGUI.indentLevel++;
@@ -123,12 +133,53 @@ namespace Crosstales.RTVoice.EditorExtension
             EditorGUILayout.EndToggleGroup();
 
             GUILayout.Space(8);
+            GUILayout.Label("eSpeak Settings", EditorStyles.boldLabel);
+
+            eSpeakMode = EditorGUILayout.Toggle(new GUIContent("eSpeak Mode", "Enable or disable eSpeak for standalone platforms (default: false)."), script.ESpeakMode);
+            if (eSpeakMode != script.ESpeakMode)
+            {
+                serializedObject.FindProperty("ESpeakMode").boolValue = eSpeakMode;
+                serializedObject.ApplyModifiedProperties();
+
+                voiceIndex = 0;
+
+                Speaker.ReloadProvider();
+                //Speaker.isUseEspeak = useEspeak;
+            }
+
+            eSpeakModifier = (Model.Enum.ESpeakModifiers)EditorGUILayout.EnumPopup(new GUIContent("eSpeak Modifier", "Active modifier for all eSpeak voices (default: none, m1-m6 = male, f1-f4 = female)."), script.ESpeakModifier);
+            if (eSpeakModifier != script.ESpeakModifier)
+            {
+                serializedObject.FindProperty("ESpeakModifier").enumValueIndex = (int)eSpeakModifier;
+            }
+
+            GUILayout.Space(8);
             GUILayout.Label("Advanced Settings", EditorStyles.boldLabel);
 
             autoClearTags = EditorGUILayout.Toggle(new GUIContent("Auto Clear Tags", "Automatically clear tags from speeches depending on the capabilities of the current TTS-system (default: false)."), script.AutoClearTags);
             if (autoClearTags != script.AutoClearTags)
             {
                 serializedObject.FindProperty("AutoClearTags").boolValue = autoClearTags;
+            }
+
+            GUILayout.Space(8);
+            GUILayout.Label("AudioClip Settings", EditorStyles.boldLabel);
+
+            streamed = EditorGUILayout.Toggle(new GUIContent("Streamed", "Enable or disable streaming the audio (decrease the latency, default: false)."), script.Streamed);
+            if (streamed != script.Streamed)
+            {
+                serializedObject.FindProperty("Streamed").boolValue = streamed;
+            }
+
+            compressed = EditorGUILayout.Toggle(new GUIContent("Compressed", "Enable or disable compressing the audio (needs less memory but more performance, default: false)."), script.Compressed);
+            if (compressed != script.Compressed)
+            {
+                serializedObject.FindProperty("Compressed").boolValue = compressed;
+            }
+
+            if (compressed && streamed)
+            {
+                EditorGUILayout.HelpBox("Streamed and Compressed at the same time is not possible! Please choose one of the two possibilities.", MessageType.Warning);
             }
 
             GUILayout.Space(8);
@@ -151,14 +202,6 @@ namespace Crosstales.RTVoice.EditorExtension
             {
                 serializedObject.FindProperty("DontDestroy").boolValue = dontDestroy;
             }
-            
-            GUILayout.Space(8);
-
-            if (GUILayout.Button(new GUIContent(" Reload", EditorHelper.Icon_Refresh, "Reload the provider.")))
-            {
-                Speaker.ReloadProvider();
-                GAApi.Event(typeof(SpeakerEditor).Name, "Reload the provider");
-            }
 
             EditorHelper.SeparatorUI();
 
@@ -177,6 +220,11 @@ namespace Crosstales.RTVoice.EditorExtension
                     }
 
                     EditorGUI.indentLevel--;
+                }
+
+                if (GUILayout.Button(new GUIContent(" Reload", EditorHelper.Icon_Refresh, "Reload the provider.")))
+                {
+                    Speaker.ReloadProvider();
                 }
 
                 EditorHelper.SeparatorUI();
@@ -210,7 +258,6 @@ namespace Crosstales.RTVoice.EditorExtension
                                 if (GUILayout.Button(new GUIContent(" Speak", EditorHelper.Icon_Speak, "Speaks the text with the selected voice and settings.")))
                                 {
                                     Speaker.SpeakNativeInEditor("You have selected " + Speaker.Voices[voiceIndex].Name, Speaker.Voices[voiceIndex], rate, pitch, volume);
-                                    GAApi.Event(typeof(SpeakerEditor).Name, "Speak");
                                 }
 
                                 GUI.enabled = Speaker.isSpeaking;
@@ -218,7 +265,6 @@ namespace Crosstales.RTVoice.EditorExtension
                                 if (GUILayout.Button(new GUIContent(" Silence", EditorHelper.Icon_Silence, "Silence all active speakers.")))
                                 {
                                     Speaker.Silence();
-                                    GAApi.Event(typeof(SpeakerEditor).Name, "Silence");
                                 }
 
                                 GUI.enabled = true;
@@ -271,4 +317,4 @@ namespace Crosstales.RTVoice.EditorExtension
 
     }
 }
-// © 2016-2017 crosstales LLC (https://www.crosstales.com)
+// © 2016-2018 crosstales LLC (https://www.crosstales.com)

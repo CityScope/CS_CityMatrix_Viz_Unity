@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-namespace Crosstales.Assets
+namespace Crosstales.Common.EditorTask
 {
     /// <summary>Checks if 'Online Check' is installed.</summary>
     [InitializeOnLoad]
@@ -32,4 +32,4 @@ namespace Crosstales.Assets
 
     }
 }
-// © 2017 crosstales LLC (https://www.crosstales.com)
+// © 2017-2018 crosstales LLC (https://www.crosstales.com)

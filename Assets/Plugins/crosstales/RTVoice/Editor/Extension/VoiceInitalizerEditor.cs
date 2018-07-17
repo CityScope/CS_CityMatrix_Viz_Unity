@@ -29,7 +29,7 @@ namespace Crosstales.RTVoice.EditorExtension
             {
                 if (script.AllVoices || (script.VoiceNames != null && script.VoiceNames.Length > 0))
                 {
-                    if (!Speaker.isTTSAvailable)
+                    if (!Speaker.isTTSAvailable && EditorHelper.isRTVoiceInScene)
                     {
                         EditorHelper.SeparatorUI();
                         EditorHelper.NoVoicesUI();
@@ -51,4 +51,4 @@ namespace Crosstales.RTVoice.EditorExtension
         #endregion
     }
 }
-// © 2017 crosstales LLC (https://www.crosstales.com)
+// © 2017-2018 crosstales LLC (https://www.crosstales.com)

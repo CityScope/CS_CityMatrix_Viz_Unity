@@ -1,4 +1,4 @@
-﻿# RT-Voice 2.9.3
+﻿# RT-Voice 2.9.8
 
 Thank you for buying our asset "RT-Voice"! 
 If you have any questions about this asset, send us an email at [rtvoice@crosstales.com](mailto:rtvoice@crosstales.com). 
@@ -99,4 +99,4 @@ CH-8002 Zürich
 * [NPC Chat](https://www.assetstore.unity3d.com/#!/content/9723?aid=1011lNGT)
 
 
-`Version: 22.12.2017 17:26`
+`Version: 05.06.2018 11:56`

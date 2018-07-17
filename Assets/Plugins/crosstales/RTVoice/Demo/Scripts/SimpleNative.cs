@@ -65,10 +65,7 @@ namespace Crosstales.RTVoice.Demo
             if (TextSpeakerC != null)
                 textC = TextSpeakerC.text;
 
-            if (!RTVoice.Util.Helper.hasBuiltInTTS)
-            {
-                Speaker.isMaryMode = true;
-            }
+            Speaker.isMaryMode = !RTVoice.Util.Helper.hasBuiltInTTS;
 
             if (PlayOnStart)
             {
@@ -281,4 +278,4 @@ namespace Crosstales.RTVoice.Demo
         #endregion
     }
 }
-// © 2015-2017 crosstales LLC (https://www.crosstales.com)
+// © 2015-2018 crosstales LLC (https://www.crosstales.com)

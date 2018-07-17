@@ -52,16 +52,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TextFiles: []
-  RTVoiceNameWindows: Microsoft David Desktop
-  RTVoiceNameMac: Alex
-  RTVoiceNameAndroid: 
-  RTVoiceNameIOS: Daniel
-  RTVoiceNameWSA: 
-  RTVoiceNameMaryTTS: 
+  Voices:
+    VoiceNameWindows: Microsoft David Desktop
+    VoiceNameMac: Alex
+    VoiceNameLinux: english
+    VoiceNameAndroid: en
+    VoiceNameIOS: Daniel
+    VoiceNameWSA: Microsoft David Mobile
+    VoiceNameMaryTTS: cmu-rms-hsmm
+    Culture: en
+    Gender: 2
   Mode: 0
   PlayOnStart: 0
-  Delay: 0
-  Culture: en
+  Delay: 0.2
   Source: {fileID: 0}
   Rate: 1
   Pitch: 1

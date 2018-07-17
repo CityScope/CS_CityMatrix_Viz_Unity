@@ -5,26 +5,28 @@ namespace Crosstales.UI
     /// <summary>Static Button Manager.</summary>
     public class StaticManager : MonoBehaviour
     {
-        public string AssetstoreURL;
+        #region Public methods
 
         public void Quit()
         {
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
 #else
-		Application.Quit();
+            Application.Quit();
 #endif
         }
 
         public void OpenCrosstales()
         {
-            Application.OpenURL("https://crosstales.com/");
+            Application.OpenURL(Common.Util.BaseConstants.ASSET_AUTHOR_URL);
         }
 
         public void OpenAssetstore()
         {
-            Application.OpenURL(AssetstoreURL);
+            Application.OpenURL("https://goo.gl/qwtXyb");
         }
+
+        #endregion
     }
 }
-// © 2017 crosstales LLC (https://www.crosstales.com)
+// © 2017-2018 crosstales LLC (https://www.crosstales.com)

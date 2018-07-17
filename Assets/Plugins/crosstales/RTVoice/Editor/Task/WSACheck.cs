@@ -9,7 +9,7 @@ namespace Crosstales.RTVoice.EditorTask
     public static class WSACheck
     {
 
-        #region Constructor
+#region Constructor
 
         static WSACheck()
         {
@@ -27,9 +27,9 @@ namespace Crosstales.RTVoice.EditorTask
             }
         }
 
-        #endregion
+#endregion
 
     }
 }
 #endif
-// © 2017 crosstales LLC (https://www.crosstales.com)
+// © 2017-2018 crosstales LLC (https://www.crosstales.com)

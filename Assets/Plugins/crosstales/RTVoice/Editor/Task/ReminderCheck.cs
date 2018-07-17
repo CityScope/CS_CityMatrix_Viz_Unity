@@ -40,17 +40,15 @@ namespace Crosstales.RTVoice.EditorTask
                         Application.OpenURL(EditorConstants.ASSET_URL);
                         EditorConfig.REMINDER_CHECK = false;
 
-                        GAApi.Event(typeof(ReminderCheck).Name, "rate", "count", count);
+                        Debug.LogWarning("+++ Thank you for rating " + Util.Constants.ASSET_NAME + "! +++");
                     }
                     else if (option == 1)
                     {
                         // do nothing!
-                        GAApi.Event(typeof(ReminderCheck).Name, "later", "count", count);
                     }
                     else
                     {
                         EditorConfig.REMINDER_CHECK = false;
-                        GAApi.Event(typeof(ReminderCheck).Name, "never", "count", count);
                     }
 
                     EditorConfig.Save();
@@ -70,4 +68,4 @@ namespace Crosstales.RTVoice.EditorTask
 
     }
 }
-// © 2017 crosstales LLC (https://www.crosstales.com)
+// © 2017-2018 crosstales LLC (https://www.crosstales.com)

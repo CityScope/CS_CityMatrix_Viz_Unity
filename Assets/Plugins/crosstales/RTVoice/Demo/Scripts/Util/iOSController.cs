@@ -24,3 +24,4 @@ namespace Crosstales.RTVoice.Demo.Util
         }
     }
 }
+// © 2016-2018 crosstales LLC (https://www.crosstales.com)

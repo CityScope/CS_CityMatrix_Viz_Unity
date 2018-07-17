@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &123184
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 468548}
+  - 114: {fileID: 11445854}
+  m_Layer: 0
+  m_Name: SpeechText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &468548
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 123184}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+--- !u!114 &11445854
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 123184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -92973265, guid: bd6a627ffc42e5643885da2fce5677c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Text: "<s>\r\n    Did you know\r\n    <break strength=\"x-weak\" />\r\n    Unity
+    by default does\r\n    <emphasis level=\"moderate\">not</emphasis>\r\n    provide\r\n
+    \   <break strength=\"x-weak\" /> \r\n    a reliable solution to check for internet
+    availability?\r\n</s>"
+  RTVoiceNameWindows: Microsoft David Desktop
+  RTVoiceNameMac: Alex
+  RTVoiceNameAndroid: 
+  RTVoiceNameIOS: Daniel
+  RTVoiceNameWSA: Microsoft David Mobile
+  RTVoiceNameMaryTTS: cmu-rms-hsmm
+  Mode: 0
+  Culture: en
+  Source: {fileID: 0}
+  Rate: 1
+  Pitch: 1
+  Volume: 1
+  PlayOnStart: 1
+  Delay: 0
+  GenerateAudioFile: 1
+  FilePath: _generatedAudio\
+  FileName: Speech01
+  FileInsideAssets: 1
+--- !u!1001 &100100000
+Prefab:
+  m_ObjectHideFlags: 1
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications: []
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 0}
+  m_RootGameObject: {fileID: 123184}
+  m_IsPrefabParent: 1

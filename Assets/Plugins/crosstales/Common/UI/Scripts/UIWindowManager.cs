@@ -3,9 +3,11 @@ using UnityEngine.UI;
 
 namespace Crosstales.UI
 {
-	/// <summary>Change the state of all Window panels.</summary>
+    /// <summary>Change the state of all Window panels.</summary>
     public class UIWindowManager : MonoBehaviour
     {
+        #region Variables
+
         /// <summary>All Windows of the scene.</summary>
         [Tooltip("All Windows of the scene.")]
         public GameObject[] Windows;
@@ -13,7 +15,12 @@ namespace Crosstales.UI
         private Image image;
         private GameObject DontTouch;
 
-		public void Start()
+        #endregion
+
+
+        #region MonoBehaviour methods
+
+        public void Start()
         {
             foreach (GameObject window in Windows)
             {
@@ -23,6 +30,11 @@ namespace Crosstales.UI
                 image.color = c;
             }
         }
+
+        #endregion
+
+
+        #region Public methods
 
         public void ChangeState(GameObject x)
         {
@@ -36,10 +48,12 @@ namespace Crosstales.UI
                     image.color = c;
                 }
 
-				DontTouch = window.transform.Find("Panel/DontTouch").gameObject;
+                DontTouch = window.transform.Find("Panel/DontTouch").gameObject;
                 DontTouch.SetActive(window != x);
             }
         }
+
+        #endregion
     }
 }
-// © 2017 crosstales LLC (https://www.crosstales.com)
+// © 2017-2018 crosstales LLC (https://www.crosstales.com)

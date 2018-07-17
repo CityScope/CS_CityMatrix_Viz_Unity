@@ -29,10 +29,11 @@ namespace Crosstales.RTVoice.Demo
         [Range(0f, 1f)]
         public float VolumeB = 1f;
 
+        public Model.Enum.Gender GenderA = Model.Enum.Gender.UNKNOWN;
+        public Model.Enum.Gender GenderB = Model.Enum.Gender.UNKNOWN;
+
         public AudioSource AudioPersonA;
         public AudioSource AudioPersonB;
-        public GameObject VisualsA;
-        public GameObject VisualsB;
 
         [Header("Dialogues")]
         public string[] DialogPersonA;
@@ -55,12 +56,6 @@ namespace Crosstales.RTVoice.Demo
 
         public void Start()
         {
-            if (VisualsA != null)
-                VisualsA.SetActive(false);
-
-            if (VisualsB != null)
-                VisualsB.SetActive(false);
-
             // Subscribe event listeners
             Speaker.OnSpeakStart += speakStartMethod;
             Speaker.OnSpeakComplete += speakCompleteMethod;
@@ -87,8 +82,10 @@ namespace Crosstales.RTVoice.Demo
                 playingA = false;
                 playingB = false;
 
-                Voice personA = Speaker.VoiceForCulture(CultureA);
-                Voice personB = Speaker.VoiceForCulture(CultureB, 1);
+                //Voice personA = Speaker.VoiceForCulture(CultureA);
+                //Voice personB = Speaker.VoiceForCulture(CultureB, 1);
+                //Voice personA = Speaker.VoiceForGender(GenderA, CultureA);
+                //Voice personB = Speaker.VoiceForGender(GenderB, CultureB, 1);
 
                 int index = 0;
 
@@ -96,18 +93,12 @@ namespace Crosstales.RTVoice.Demo
                 {
 
                     //Person A
-                    if (VisualsA != null)
-                        VisualsA.SetActive(true);
-
-                    if (VisualsB != null)
-                        VisualsB.SetActive(false);
-
                     if (DialogPersonA != null && index < DialogPersonA.Length)
                     {
                         CurrentDialogA = DialogPersonA[index];
                     }
 
-                    uidSpeakerA = Speaker.Speak(CurrentDialogA, AudioPersonA, personA, true, RateA, PitchA, VolumeA);
+                    uidSpeakerA = Speaker.Speak(CurrentDialogA, AudioPersonA, Speaker.VoiceForGender(GenderA, CultureA), true, RateA, PitchA, VolumeA);
 
                     //wait until ready
                     do
@@ -127,18 +118,12 @@ namespace Crosstales.RTVoice.Demo
                     { //ensure it's still running
 
                         // Person B
-                        if (VisualsA != null)
-                            VisualsA.SetActive(false);
-
-                        if (VisualsB != null)
-                            VisualsB.SetActive(true);
-
                         if (DialogPersonB != null && index < DialogPersonB.Length)
                         {
                             CurrentDialogB = DialogPersonB[index];
                         }
 
-                        uidSpeakerB = Speaker.Speak(CurrentDialogB, AudioPersonB, personB, true, RateB, PitchB, VolumeB);
+                        uidSpeakerB = Speaker.Speak(CurrentDialogB, AudioPersonB, Speaker.VoiceForGender(GenderB, CultureB, 1), true, RateB, PitchB, VolumeB);
 
                         //wait until ready
                         do
@@ -156,12 +141,6 @@ namespace Crosstales.RTVoice.Demo
                     }
                     index++;
                 }
-
-                if (VisualsA != null)
-                    VisualsA.SetActive(false);
-
-                if (VisualsB != null)
-                    VisualsB.SetActive(false);
 
                 Running = false;
             }
@@ -217,4 +196,4 @@ namespace Crosstales.RTVoice.Demo
         #endregion
     }
 }
-// © 2015-2017 crosstales LLC (https://www.crosstales.com)
+// © 2015-2018 crosstales LLC (https://www.crosstales.com)

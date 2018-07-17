@@ -10,7 +10,6 @@ GameObject:
   - 4: {fileID: 433370}
   - 33: {fileID: 3376726}
   - 23: {fileID: 2337966}
-  - 114: {fileID: 11478226}
   m_Layer: 5
   m_Name: VisualCubePersonA
   m_TagString: Untagged
@@ -64,18 +63,6 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 163632}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &11478226
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 163632}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e22c52a914b5af4181d07cc2380b0bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ChangeInterval: {x: 2, y: 5}
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

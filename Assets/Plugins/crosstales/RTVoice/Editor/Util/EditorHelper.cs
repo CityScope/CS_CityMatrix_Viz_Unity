@@ -400,7 +400,6 @@ namespace Crosstales.RTVoice.EditorUtil
                 if (GUILayout.Button(new GUIContent(" Add RTVoice", Icon_Plus, "Add the '" + Util.Constants.RTVOICE_SCENE_OBJECT_NAME + "'-prefab to the current scene.")))
                 {
                     InstantiatePrefab(Util.Constants.RTVOICE_SCENE_OBJECT_NAME);
-                    GAApi.Event(typeof(EditorHelper).Name, "Add " + Util.Constants.RTVOICE_SCENE_OBJECT_NAME);
                 }
             }
         }
@@ -441,7 +440,7 @@ namespace Crosstales.RTVoice.EditorUtil
 #if rtv_ignore_setup
                 logo = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets" + EditorConfig.ASSET_PATH + "Icons/" + fileName, typeof(Texture2D));
 #else
-                logo = (Texture2D)EditorGUIUtility.Load("RTVoice/" + fileName);
+                logo = (Texture2D)EditorGUIUtility.Load("crosstales/RTVoice/" + fileName);
 #endif
 
                 if (logo == null)
@@ -455,4 +454,4 @@ namespace Crosstales.RTVoice.EditorUtil
         #endregion
     }
 }
-// © 2016-2017 crosstales LLC (https://www.crosstales.com)
+// © 2016-2018 crosstales LLC (https://www.crosstales.com)

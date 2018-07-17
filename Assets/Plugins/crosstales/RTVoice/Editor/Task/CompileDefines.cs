@@ -1,12 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using UnityEditor;
+﻿using UnityEditor;
 
 namespace Crosstales.RTVoice.EditorTask
 {
     /// <summary>Adds the given define symbols to PlayerSettings define symbols.</summary>
     [InitializeOnLoad]
-    public class CompileDefines
+    public class CompileDefines : Common.EditorTask.BaseCompileDefines
     {
 
         private static readonly string[] symbols = new string[] {
@@ -15,13 +13,8 @@ namespace Crosstales.RTVoice.EditorTask
 
         static CompileDefines()
         {
-            string definesString = PlayerSettings.GetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup);
-
-            List<string> allDefines = definesString.Split(';').ToList();
-            allDefines.AddRange(symbols.Except(allDefines));
-
-            PlayerSettings.SetScriptingDefineSymbolsForGroup(EditorUserBuildSettings.selectedBuildTargetGroup, string.Join(";", allDefines.ToArray()));
+            setCompileDefines(symbols);
         }
     }
 }
-// © 2017 crosstales LLC (https://www.crosstales.com)
+// © 2017-2018 crosstales LLC (https://www.crosstales.com)

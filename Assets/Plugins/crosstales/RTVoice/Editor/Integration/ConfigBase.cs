@@ -88,7 +88,6 @@ namespace Crosstales.RTVoice.EditorIntegration
                         if (GUILayout.Button(new GUIContent(" Manual", EditorHelper.Icon_Manual, "Show the manual.")))
                         {
                             Application.OpenURL(Util.Constants.ASSET_MANUAL_URL);
-                            GAApi.Event(typeof(ConfigBase).Name, "ASSET_MANUAL_URL");
                         }
 
                         GUILayout.Space(6);
@@ -96,7 +95,6 @@ namespace Crosstales.RTVoice.EditorIntegration
                         if (GUILayout.Button(new GUIContent(" Forum", EditorHelper.Icon_Forum, "Visit the forum page.")))
                         {
                             Application.OpenURL(Util.Constants.ASSET_FORUM_URL);
-                            GAApi.Event(typeof(ConfigBase).Name, "ASSET_FORUM_URL");
                         }
                     }
                     GUILayout.EndVertical();
@@ -107,7 +105,6 @@ namespace Crosstales.RTVoice.EditorIntegration
                         if (GUILayout.Button(new GUIContent(" API", EditorHelper.Icon_API, "Show the API.")))
                         {
                             Application.OpenURL(Util.Constants.ASSET_API_URL);
-                            GAApi.Event(typeof(ConfigBase).Name, "ASSET_API_URL");
                         }
 
                         GUILayout.Space(6);
@@ -115,7 +112,6 @@ namespace Crosstales.RTVoice.EditorIntegration
                         if (GUILayout.Button(new GUIContent(" Product", EditorHelper.Icon_Product, "Visit the product page.")))
                         {
                             Application.OpenURL(Util.Constants.ASSET_WEB_URL);
-                            GAApi.Event(typeof(ConfigBase).Name, "ASSET_WEB_URL");
                         }
                     }
                     GUILayout.EndVertical();
@@ -132,13 +128,11 @@ namespace Crosstales.RTVoice.EditorIntegration
                     if (GUILayout.Button(new GUIContent(" Promo", EditorHelper.Video_Promo, "View the promotion video on 'Youtube'.")))
                     {
                         Application.OpenURL(Util.Constants.ASSET_VIDEO_PROMO);
-                        GAApi.Event(typeof(ConfigBase).Name, "ASSET_VIDEO_PROMO");
                     }
 
                     if (GUILayout.Button(new GUIContent(" Tutorial", EditorHelper.Video_Tutorial, "View the tutorial video on 'Youtube'.")))
                     {
                         Application.OpenURL(Util.Constants.ASSET_VIDEO_TUTORIAL);
-                        GAApi.Event(typeof(ConfigBase).Name, "ASSET_VIDEO_TUTORIAL");
                     }
                 }
                 GUILayout.EndHorizontal();
@@ -148,7 +142,6 @@ namespace Crosstales.RTVoice.EditorIntegration
                 if (GUILayout.Button(new GUIContent(" All Videos", EditorHelper.Icon_Videos, "Visit our 'Youtube'-channel for more videos.")))
                 {
                     Application.OpenURL(Util.Constants.ASSET_SOCIAL_YOUTUBE);
-                    GAApi.Event(typeof(ConfigBase).Name, "ASSET_SOCIAL_YOUTUBE");
                 }
 
                 EditorHelper.SeparatorUI();
@@ -160,25 +153,21 @@ namespace Crosstales.RTVoice.EditorIntegration
                     if (GUILayout.Button(new GUIContent(string.Empty, EditorHelper.Store_PlayMaker, "More information about 'PlayMaker'.")))
                     {
                         Application.OpenURL(Util.Constants.ASSET_3P_PLAYMAKER);
-                        GAApi.Event(typeof(ConfigBase).Name, "ASSET_3P_PLAYMAKER");
                     }
 
                     if (GUILayout.Button(new GUIContent(string.Empty, EditorHelper.Store_AdventureCreator, "More information about 'Adventure Creator'.")))
                     {
                         Application.OpenURL(Util.Constants.ASSET_3P_ADVENTURE_CREATOR);
-                        GAApi.Event(typeof(ConfigBase).Name, "ASSET_3P_ADVENTURE_CREATOR");
                     }
 
                     if (GUILayout.Button(new GUIContent(string.Empty, EditorHelper.Store_CinemaDirector, "More information about 'Cinema Director'.")))
                     {
                         Application.OpenURL(Util.Constants.ASSET_3P_CINEMA_DIRECTOR);
-                        GAApi.Event(typeof(ConfigBase).Name, "ASSET_3P_CINEMA_DIRECTOR");
                     }
 
                     if (GUILayout.Button(new GUIContent(string.Empty, EditorHelper.Store_DialogueSystem, "More information about 'Dialogue System'.")))
                     {
                         Application.OpenURL(Util.Constants.ASSET_3P_DIALOG_SYSTEM);
-                        GAApi.Event(typeof(ConfigBase).Name, "ASSET_3P_DIALOG_SYSTEM");
                     }
                 }
                 GUILayout.EndHorizontal();
@@ -188,25 +177,21 @@ namespace Crosstales.RTVoice.EditorIntegration
                     if (GUILayout.Button(new GUIContent(string.Empty, EditorHelper.Store_LDC, "More information about 'Localized Dialogs'.")))
                     {
                         Application.OpenURL(Util.Constants.ASSET_3P_LOCALIZED_DIALOGS);
-                        GAApi.Event(typeof(ConfigBase).Name, "ASSET_3P_LOCALIZED_DIALOGS");
                     }
 
                     if (GUILayout.Button(new GUIContent(string.Empty, EditorHelper.Store_LipSync, "More information about 'LipSync'.")))
                     {
                         Application.OpenURL(Util.Constants.ASSET_3P_LIPSYNC);
-                        GAApi.Event(typeof(ConfigBase).Name, "ASSET_3P_LIPSYNC");
                     }
 
                     if (GUILayout.Button(new GUIContent(string.Empty, EditorHelper.Store_NPC_Chat, "More information about 'NPC Chat'.")))
                     {
                         Application.OpenURL(Util.Constants.ASSET_3P_NPC_CHAT);
-                        GAApi.Event(typeof(ConfigBase).Name, "ASSET_3P_NPC_CHAT");
                     }
 
                     if (GUILayout.Button(new GUIContent(string.Empty, EditorHelper.Store_QuestSystem, "More information about 'Quest System'.")))
                     {
                         Application.OpenURL(Util.Constants.ASSET_3P_QUEST_SYSTEM);
-                        GAApi.Event(typeof(ConfigBase).Name, "ASSET_3P_QUEST_SYSTEM");
                     }
                 }
                 GUILayout.EndHorizontal();
@@ -216,25 +201,21 @@ namespace Crosstales.RTVoice.EditorIntegration
                     if (GUILayout.Button(new GUIContent(string.Empty, EditorHelper.Store_SALSA, "More information about 'SALSA'.")))
                     {
                         Application.OpenURL(Util.Constants.ASSET_3P_SALSA);
-                        GAApi.Event(typeof(ConfigBase).Name, "ASSET_3P_SALSA");
                     }
 
                     if (GUILayout.Button(new GUIContent(string.Empty, EditorHelper.Store_SLATE, "More information about 'SLATE'.")))
                     {
                         Application.OpenURL(Util.Constants.ASSET_3P_SLATE);
-                        GAApi.Event(typeof(ConfigBase).Name, "ASSET_3P_SLATE");
                     }
 
                     if (GUILayout.Button(new GUIContent(string.Empty, EditorHelper.Store_THE_Dialogue_Engine, "More information about 'THE Dialogue Engine'.")))
                     {
                         Application.OpenURL(Util.Constants.ASSET_3P_DIALOGUE_ENGINE);
-                        GAApi.Event(typeof(ConfigBase).Name, "ASSET_3P_DIALOGUE_ENGINE");
                     }
 
                     if (GUILayout.Button(new GUIContent(string.Empty, EditorHelper.Store_uSequencer, "More information about 'uSequencer'.")))
                     {
                         Application.OpenURL(Util.Constants.ASSET_3P_USEQUENCER);
-                        GAApi.Event(typeof(ConfigBase).Name, "ASSET_3P_USEQUENCER");
                     }
                 }
                 GUILayout.EndHorizontal();
@@ -244,7 +225,6 @@ namespace Crosstales.RTVoice.EditorIntegration
                 if (GUILayout.Button(new GUIContent(" All Supported Assets", EditorHelper.Icon_3p_Assets, "More information about the all supported assets.")))
                 {
                     Application.OpenURL(Util.Constants.ASSET_3P_URL);
-                    GAApi.Event(typeof(ConfigBase).Name, "ASSET_3P_URL");
                 }
             }
             EditorGUILayout.EndScrollView();
@@ -300,7 +280,6 @@ namespace Crosstales.RTVoice.EditorIntegration
                     if (GUILayout.Button(new GUIContent(string.Empty, EditorHelper.Logo_Asset, "Visit asset website")))
                     {
                         Application.OpenURL(EditorConstants.ASSET_URL);
-                        GAApi.Event(typeof(ConfigBase).Name, "ASSET_URL");
                     }
 
                     if (!Util.Constants.isPro)
@@ -308,7 +287,6 @@ namespace Crosstales.RTVoice.EditorIntegration
                         if (GUILayout.Button(new GUIContent(" Upgrade", "Upgrade " + Util.Constants.ASSET_NAME + " to the PRO-version")))
                         {
                             Application.OpenURL(Util.Constants.ASSET_PRO_URL);
-                            GAApi.Event(typeof(ConfigBase).Name, "ASSET_PRO_URL");
                         }
                     }
                 }
@@ -316,7 +294,7 @@ namespace Crosstales.RTVoice.EditorIntegration
             }
             GUILayout.EndHorizontal();
 
-            GUILayout.Label("© 2015-2017 by " + Util.Constants.ASSET_AUTHOR);
+            GUILayout.Label("© 2015-2018 by " + Util.Constants.ASSET_AUTHOR);
 
             EditorHelper.SeparatorUI();
 
@@ -325,13 +303,11 @@ namespace Crosstales.RTVoice.EditorIntegration
                 if (GUILayout.Button(new GUIContent(" AssetStore", EditorHelper.Logo_Unity, "Visit the 'Unity AssetStore' website.")))
                 {
                     Application.OpenURL(Util.Constants.ASSET_CT_URL);
-                    GAApi.Event(typeof(ConfigBase).Name, "ASSET_CT_URL");
                 }
 
                 if (GUILayout.Button(new GUIContent(" " + Util.Constants.ASSET_AUTHOR, EditorHelper.Logo_CT, "Visit the '" + Util.Constants.ASSET_AUTHOR + "' website.")))
                 {
                     Application.OpenURL(Util.Constants.ASSET_AUTHOR_URL);
-                    GAApi.Event(typeof(ConfigBase).Name, "ASSET_AUTHOR_URL");
                 }
             }
             GUILayout.EndHorizontal();
@@ -359,8 +335,8 @@ namespace Crosstales.RTVoice.EditorIntegration
 
                         if (GUILayout.Button(new GUIContent(" Download", "Visit the 'Unity AssetStore' to download the latest version.")))
                         {
-                            Application.OpenURL(EditorConstants.ASSET_URL);
-                            GAApi.Event(typeof(ConfigBase).Name, "UPDATE");
+                            //Application.OpenURL(EditorConstants.ASSET_URL);
+                            UnityEditorInternal.AssetStore.Open("content/" + EditorConstants.ASSET_ID);
                         }
                     }
                     else if (updateStatus == UpdateStatus.UPDATE_PRO)
@@ -370,7 +346,6 @@ namespace Crosstales.RTVoice.EditorIntegration
                         if (GUILayout.Button(new GUIContent(" Upgrade", "Upgrade to the PRO-version in the 'Unity AssetStore'.")))
                         {
                             Application.OpenURL(Util.Constants.ASSET_PRO_URL);
-                            GAApi.Event(typeof(ConfigBase).Name, "UPGRADE PRO");
                         }
                     }
                     else if (updateStatus == UpdateStatus.UPDATE_VERSION)
@@ -380,7 +355,6 @@ namespace Crosstales.RTVoice.EditorIntegration
                         if (GUILayout.Button(new GUIContent(" Upgrade", "Upgrade to the newer version in the 'Unity AssetStore'")))
                         {
                             Application.OpenURL(Util.Constants.ASSET_CT_URL);
-                            GAApi.Event(typeof(ConfigBase).Name, "UPGRADE");
                         }
                     }
                     else if (updateStatus == UpdateStatus.DEPRECATED)
@@ -390,7 +364,6 @@ namespace Crosstales.RTVoice.EditorIntegration
                         if (GUILayout.Button(new GUIContent(" More Information", "Visit the 'crosstales'-site for more information.")))
                         {
                             Application.OpenURL(Util.Constants.ASSET_AUTHOR_URL);
-                            GAApi.Event(typeof(ConfigBase).Name, "DEPRECATED");
                         }
                     }
                     else
@@ -413,8 +386,6 @@ namespace Crosstales.RTVoice.EditorIntegration
                     {
                         worker = new System.Threading.Thread(() => UpdateCheck.UpdateCheckForEditor(out updateText, out updateStatus));
                         worker.Start();
-
-                        GAApi.Event(typeof(ConfigBase).Name, "UpdateCheck");
                     }
 
                     GUI.enabled = true;
@@ -519,25 +490,21 @@ namespace Crosstales.RTVoice.EditorIntegration
                 if (GUILayout.Button(new GUIContent(string.Empty, EditorHelper.Social_Facebook, "Follow us on 'Facebook'.")))
                 {
                     Application.OpenURL(Util.Constants.ASSET_SOCIAL_FACEBOOK);
-                    GAApi.Event(typeof(ConfigBase).Name, "ASSET_SOCIAL_FACEBOOK");
                 }
 
                 if (GUILayout.Button(new GUIContent(string.Empty, EditorHelper.Social_Twitter, "Follow us on 'Twitter'.")))
                 {
                     Application.OpenURL(Util.Constants.ASSET_SOCIAL_TWITTER);
-                    GAApi.Event(typeof(ConfigBase).Name, "ASSET_SOCIAL_TWITTER");
                 }
 
                 if (GUILayout.Button(new GUIContent(string.Empty, EditorHelper.Social_Linkedin, "Follow us on 'LinkedIn'.")))
                 {
                     Application.OpenURL(Util.Constants.ASSET_SOCIAL_LINKEDIN);
-                    GAApi.Event(typeof(ConfigBase).Name, "ASSET_SOCIAL_LINKEDIN");
                 }
 
                 if (GUILayout.Button(new GUIContent(string.Empty, EditorHelper.Social_Xing, "Follow us on 'XING'.")))
                 {
                     Application.OpenURL(Util.Constants.ASSET_SOCIAL_XING);
-                    GAApi.Event(typeof(ConfigBase).Name, "ASSET_SOCIAL_XING");
                 }
             }
             GUILayout.EndHorizontal();
@@ -558,4 +525,4 @@ namespace Crosstales.RTVoice.EditorIntegration
         #endregion
     }
 }
-// © 2016-2017 crosstales LLC (https://www.crosstales.com)
+// © 2016-2018 crosstales LLC (https://www.crosstales.com)

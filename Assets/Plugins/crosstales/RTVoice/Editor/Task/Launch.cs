@@ -25,4 +25,4 @@ namespace Crosstales.RTVoice.EditorTask
         #endregion
     }
 }
-// © 2017 crosstales LLC (https://www.crosstales.com)
+// © 2017-2018 crosstales LLC (https://www.crosstales.com)

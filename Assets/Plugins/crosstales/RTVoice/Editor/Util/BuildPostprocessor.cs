@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿#if UNITY_STANDALONE_WIN
+using UnityEditor;
 using UnityEngine;
 using UnityEditor.Callbacks;
 
@@ -30,4 +31,5 @@ namespace Crosstales.RTVoice.EditorUtil
         }
     }
 }
-// © 2015-2017 crosstales LLC (https://www.crosstales.com)
+#endif
+// © 2015-2018 crosstales LLC (https://www.crosstales.com)

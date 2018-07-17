@@ -39,6 +39,10 @@ namespace Crosstales.RTVoice.Demo
         private string lastCulture = "unknown";
         private System.Collections.Generic.List<SpeakWrapper> wrappers = new System.Collections.Generic.List<SpeakWrapper>();
 
+        System.Collections.Generic.List<Voice> items = new System.Collections.Generic.List<Voice>();
+
+        private Model.Enum.Gender gender = Model.Enum.Gender.UNKNOWN;
+
         #endregion
 
 
@@ -53,7 +57,7 @@ namespace Crosstales.RTVoice.Demo
             if (Cultures != null)
                 Cultures.text = string.Join(", ", Speaker.Cultures.ToArray());
 
-            if (Speaker.isMaryMode || Helper.isWindowsPlatform)
+            if (Speaker.isMaryMode || Helper.isWindowsBasedPlatform || Speaker.isESpeakMode)
             {
                 if (Input != null)
                     Input.text = "Hi there, my name is RT-Voice, your runtime speaker!" + System.Environment.NewLine + "I can now speak with the complete SSML specification <prosody rate=\"-50%\">at half speed</prosody> or <prosody pitch=\"-50%\">50% lower pitched.</prosody>. " + System.Environment.NewLine + "<prosody contour=\"(0%,+20%) (40%,+40%) (60%,+60%) (80%,+80%) (100%,+100%)\">I can talk with rising intonation</prosody> <prosody contour=\"(0%,-20%) (40%,-40%) (60%,-60%) (80%,-80%) (100%,-100%)\">or with falling intonation.</prosody>" + System.Environment.NewLine + "This is <emphasis level=\"strong\">awesome</emphasis>!";
@@ -76,7 +80,7 @@ namespace Crosstales.RTVoice.Demo
             }
 
             if (Voices != null)
-                Voices.text = "Voices (" + Speaker.Voices.Count + ")";
+                Voices.text = "Voices (" + items.Count + ")";
         }
 
         public void Update()
@@ -151,6 +155,13 @@ namespace Crosstales.RTVoice.Demo
             Speaker.isMaryMode = maryTTS;
         }
 
+        public void GenderChanged(System.Int32 index)
+        {
+            gender = (Model.Enum.Gender)index;
+
+            buildVoicesList();
+        }
+
         #endregion
 
 
@@ -158,17 +169,18 @@ namespace Crosstales.RTVoice.Demo
 
         private void onVoicesReady()
         {
+            //Debug.Log("onVoicesReady");
+
             if (Cultures != null)
                 Cultures.text = string.Join(", ", Speaker.Cultures.ToArray());
 
             buildVoicesList();
-
-            if (Voices != null)
-                Voices.text = "Voices (" + Speaker.Voices.Count + ")";
         }
 
         private void onProviderChange(string provider)
         {
+            //Debug.Log("onProviderChange");
+
             clearVoicesList();
 
             if (Voices != null)
@@ -202,8 +214,10 @@ namespace Crosstales.RTVoice.Demo
             if (Target != null)
             {
                 RectTransform containerRectTransform = Target.GetComponent<RectTransform>();
-                System.Collections.Generic.List<Voice> items = Speaker.VoicesForCulture(Culture.text);
+                //items = Speaker.VoicesForCulture(Culture.text);
+                items = Speaker.VoicesForGender(gender, Culture.text, false);
 
+                /*
                 if (items.Count == 0)
                 {
                     if (!string.IsNullOrEmpty(Culture.text))
@@ -212,6 +226,7 @@ namespace Crosstales.RTVoice.Demo
                     }
                     items = Speaker.Voices;
                 }
+                */
 
                 if (items.Count > 0)
                 {
@@ -286,9 +301,12 @@ namespace Crosstales.RTVoice.Demo
                 if (Scroll != null)
                     Scroll.value = 1f;
             }
+
+            if (Voices != null)
+                Voices.text = "Voices (" + items.Count + ")";
         }
 
         #endregion
     }
 }
-// © 2015-2017 crosstales LLC (https://www.crosstales.com)
+// © 2015-2018 crosstales LLC (https://www.crosstales.com)

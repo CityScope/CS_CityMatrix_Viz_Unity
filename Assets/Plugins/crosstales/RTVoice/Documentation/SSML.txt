@@ -1,6 +1,6 @@
 ﻿# RT-Voice - SSML
 
-Works with Windows and MaryTTS.
+Works with Windows, WSA (UWP), MaryTTS and eSpeak.
 
 
 ## Examples

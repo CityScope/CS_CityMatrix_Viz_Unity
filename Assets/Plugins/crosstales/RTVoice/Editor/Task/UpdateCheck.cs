@@ -133,18 +133,15 @@ namespace Crosstales.RTVoice.EditorTask
                 if (option == 0)
                 {
                     Application.OpenURL(EditorConstants.ASSET_URL);
-
-                    GAApi.Event(typeof(UpdateCheck).Name, "update_version");
+                    //UnityEditorInternal.AssetStore.Open("content/" + EditorConstants.ASSET_ID);
                 }
                 else if (option == 1)
                 {
                     // do nothing!
-                    GAApi.Event(typeof(UpdateCheck).Name, "later");
                 }
                 else
                 {
                     EditorConfig.UPDATE_CHECK = false;
-                    GAApi.Event(typeof(UpdateCheck).Name, "never");
 
                     EditorConfig.Save();
                 }
@@ -160,18 +157,14 @@ namespace Crosstales.RTVoice.EditorTask
                 if (option == 0)
                 {
                     Application.OpenURL(Util.Constants.ASSET_PRO_URL);
-
-                    GAApi.Event(typeof(UpdateCheck).Name, "upgrade_pro");
                 }
                 else if (option == 1)
                 {
                     // do nothing!
-                    GAApi.Event(typeof(UpdateCheck).Name, "later");
                 }
                 else
                 {
                     EditorConfig.UPDATE_CHECK = false;
-                    GAApi.Event(typeof(UpdateCheck).Name, "never");
 
                     EditorConfig.Save();
                 }
@@ -187,18 +180,14 @@ namespace Crosstales.RTVoice.EditorTask
                 if (option == 0)
                 {
                     Application.OpenURL(EditorConstants.ASSET_URL);
-
-                    GAApi.Event(typeof(UpdateCheck).Name, "upgrade_version");
                 }
                 else if (option == 1)
                 {
                     // do nothing!
-                    GAApi.Event(typeof(UpdateCheck).Name, "later");
                 }
                 else
                 {
                     EditorConfig.UPDATE_CHECK = false;
-                    GAApi.Event(typeof(UpdateCheck).Name, "never");
 
                     EditorConfig.Save();
                 }
@@ -214,18 +203,14 @@ namespace Crosstales.RTVoice.EditorTask
                 if (option == 0)
                 {
                     Application.OpenURL(Util.Constants.ASSET_AUTHOR_URL);
-
-                    GAApi.Event(typeof(UpdateCheck).Name, "deprecated");
                 }
                 else if (option == 1)
                 {
                     // do nothing!
-                    GAApi.Event(typeof(UpdateCheck).Name, "later");
                 }
                 else
                 {
                     EditorConfig.UPDATE_CHECK = false;
-                    GAApi.Event(typeof(UpdateCheck).Name, "never");
 
                     EditorConfig.Save();
                 }
@@ -316,7 +301,7 @@ namespace Crosstales.RTVoice.EditorTask
             {
                 System.Net.ServicePointManager.ServerCertificateValidationCallback = Util.Helper.RemoteCertificateValidationCallback;
 
-                using (System.Net.WebClient client = new Util.CTWebClient())
+                using (System.Net.WebClient client = new Common.Util.CTWebClient())
                 {
                     string content = client.DownloadString(Util.Constants.ASSET_UPDATE_CHECK_URL);
 
@@ -462,4 +447,4 @@ namespace Crosstales.RTVoice.EditorTask
         DEPRECATED
     }
 }
-// © 2016-2017 crosstales LLC (https://www.crosstales.com)
+// © 2016-2018 crosstales LLC (https://www.crosstales.com)

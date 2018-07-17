@@ -41,22 +41,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Text: Hello world!
-  RTVoiceNameWindows: Microsoft David Desktop
-  RTVoiceNameMac: Alex
-  RTVoiceNameAndroid: 
-  RTVoiceNameIOS: Daniel
-  RTVoiceNameWSA: 
-  RTVoiceNameMaryTTS: 
+  Voices:
+    VoiceNameWindows: Microsoft David Desktop
+    VoiceNameMac: Alex
+    VoiceNameLinux: english
+    VoiceNameAndroid: en
+    VoiceNameIOS: Daniel
+    VoiceNameWSA: Microsoft David Mobile
+    VoiceNameMaryTTS: cmu-rms-hsmm
+    Culture: en
+    Gender: 2
   Mode: 0
-  Culture: en
   Source: {fileID: 0}
   Rate: 1
   Pitch: 1
   Volume: 1
   PlayOnStart: 0
-  Delay: 0
+  Delay: 0.2
   GenerateAudioFile: 0
-  FilePath: _generatedAudio/
+  FilePath: _generatedAudio\
   FileName: RTVGeneratedAudio
   FileInsideAssets: 1
 --- !u!1001 &100100000

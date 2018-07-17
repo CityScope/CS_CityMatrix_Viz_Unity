@@ -37,13 +37,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 143110}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cde98428401e9e44aa043c8e87219b1b, type: 3}
+  m_Script: {fileID: 1656341854, guid: bd6a627ffc42e5643885da2fce5677c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Sequences:
   - Text: Hi there!
-    RTVoiceNameWindows: 
-    RTVoiceNameMac: 
+    RTVoiceNameWindows: Microsoft David Desktop
+    RTVoiceNameMac: Alex
     RTVoiceNameAndroid: 
     RTVoiceNameIOS: 
     RTVoiceNameWSA: 
@@ -54,32 +54,8 @@ MonoBehaviour:
     Volume: 1
     initalized: 1
   - Text: Howdy!
-    RTVoiceNameWindows: 
-    RTVoiceNameMac: 
-    RTVoiceNameAndroid: 
-    RTVoiceNameIOS: 
-    RTVoiceNameWSA: 
-    Mode: 0
-    Source: {fileID: 0}
-    Rate: 1
-    Pitch: 1
-    Volume: 1
-    initalized: 1
-  - Text: How are you?
-    RTVoiceNameWindows: 
-    RTVoiceNameMac: 
-    RTVoiceNameAndroid: 
-    RTVoiceNameIOS: 
-    RTVoiceNameWSA: 
-    Mode: 0
-    Source: {fileID: 0}
-    Rate: 1
-    Pitch: 1
-    Volume: 1
-    initalized: 1
-  - Text: Fine and you?
-    RTVoiceNameWindows: 
-    RTVoiceNameMac: 
+    RTVoiceNameWindows: Microsoft Zira Desktop
+    RTVoiceNameMac: Vicki
     RTVoiceNameAndroid: 
     RTVoiceNameIOS: 
     RTVoiceNameWSA: 

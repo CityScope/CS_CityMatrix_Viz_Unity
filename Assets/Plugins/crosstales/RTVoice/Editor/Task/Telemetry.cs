@@ -12,9 +12,9 @@ namespace Crosstales.RTVoice.EditorTask
         static Telemetry()
         {
             string lastDate = string.Empty;
-            if (Util.CTPlayerPrefs.HasKey(EditorConstants.KEY_TELEMETRY_DATE))
+            if (Common.Util.CTPlayerPrefs.HasKey(EditorConstants.KEY_TELEMETRY_DATE))
             {
-                lastDate = Util.CTPlayerPrefs.GetString(EditorConstants.KEY_TELEMETRY_DATE);
+                lastDate = Common.Util.CTPlayerPrefs.GetString(EditorConstants.KEY_TELEMETRY_DATE);
             }
             //string lastDate = EditorPrefs.GetString(Util.Constants.KEY_TELEMETRY_DATE);
 
@@ -25,7 +25,7 @@ namespace Crosstales.RTVoice.EditorTask
             {
                 GAApi.Event(typeof(Telemetry).Name, "Startup");
 
-                Util.CTPlayerPrefs.SetString(EditorConstants.KEY_TELEMETRY_DATE, date);
+                Common.Util.CTPlayerPrefs.SetString(EditorConstants.KEY_TELEMETRY_DATE, date);
                 //EditorPrefs.SetString(Util.Constants.KEY_TELEMETRY_DATE, date);
             }
         }
@@ -34,4 +34,4 @@ namespace Crosstales.RTVoice.EditorTask
 
     }
 }
-// © 2017 crosstales LLC (https://www.crosstales.com)
+// © 2017-2018 crosstales LLC (https://www.crosstales.com)
