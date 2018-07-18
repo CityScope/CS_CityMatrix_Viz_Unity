@@ -15,12 +15,18 @@ public class InputScanners : MonoBehaviour
     ///// Public Variables
     /// <summary>Debug mode switch</summary>
     public bool debug = false;
+    /// <summary>Color calibration switch</summary>
+    public bool colorCalibration;
     /// <summary>Num of tabletop grids on x axis</summary>
     public int gridSizeX;
     /// <summary>Num of tabletop grids on y axis</summary>
     public int gridSizeY;
     /// <summary>Use webcam or not (development mode)</summary>
     public bool useWebcam;
+    /// <summary>Use scan buffer to get more accurate color scan</summary>
+    public bool useScanBuffer;
+    /// <summary>Size of scan buffer</summary>
+    public int scanBufferSize = 50;
     /// <summary>Was`keystonedQuad`; Grid image after keystoning (ready for scan)</summary>
     public GameObject scanQuad;
     /// <summary>Parent of scanners</summary>
@@ -45,7 +51,7 @@ public class InputScanners : MonoBehaviour
     
 
     /// <summary>Scale of scanners</summary>
-    public float scannerScale = 0.5f;
+    public float scannerScale = 0.015f;
     public float scannerOffset = -0.035f;
     public float bldgScale = 0.0315f;
     public float bldgGap = 0.0035f;
@@ -60,24 +66,32 @@ public class InputScanners : MonoBehaviour
     private int numOfScannersX;
     /// <summary>Num of color scanners on y axis</summary>
     private int numOfScannersY;
+    /// <summary>setup record</summary>
+    private bool setup = true;
     /// <summary>Should reassign texture?</summary>
-    private bool shouldReassignTexture;
+    private bool shouldReassignTexture = true;
+    /// <summary>Should update scanner</summary>
+    private bool updateScannerObjects = true;
+
     /// <summary>Dock scanner</summary>
-    private Dock dock;
+    private InputDock dock;
     /// <summary>List of sliders (scanners)</summary>
-    private List<LegoSlider> sliders;
+    private List<InputSlider> sliders;
     /// <summary>Dock visualization</summary>
     private GameObject dockViz;
     /// <summary>cameraKeystonedQuad???????????????</summary>
     private GameObject cameraKeystonedQuad;
+    /// <summary>Texture for keystoneQuad ? </summary>
+    private Texture2D hitTex;
+
     /// <summary>Color Settings</summary>
     private ColorSettings colorSettings;
     /// <summary>Color Classifier</summary>
     private ColorClassifier colorClassifier;
     /// <summary>Current colors scanned from each scanner</summary>
     private Color[] allColors;
-    /// <summary>???????????????????????????</summary>
-    private Queue<int>[] idBuffer;
+    /// <summary>Color scanning buffer</summary>
+    private Queue<int>[] scanBuffer;
     /// <summary>Color spheres</summary>
     private Dictionary<ColorClassifier.SampleColor, GameObject> colorRefSpheres;
     /// <summary>Dictionary for block types</summary>
@@ -103,6 +117,12 @@ public class InputScanners : MonoBehaviour
             if (!parent.GetComponent<Webcam>().enabled)
                 parent.GetComponent<Webcam>().enabled = true;
         }
+        else
+        {
+            GameObject parent = GameObject.Find("KeystonedQuad");
+            if (parent.GetComponent<Webcam>().enabled)
+                parent.GetComponent<Webcam>().enabled = false;
+        }
 
         shouldReassignTexture = true;
 
@@ -112,43 +132,7 @@ public class InputScanners : MonoBehaviour
         EventManager.StartListening("save", OnSave);
     }
 
-    /// <summary>
-    /// Update this instance.
-    /// </summary>
-    // void Update()
-    // {
-    //     if (useWebcam || shouldReassignTexture)
-    //         AssignRenderTexture();
-    //     UpdateScanners();
-    //     _gridParent.transform.localPosition = new Vector3(0,0,0);
-    //     onKeyPressed();
-    // }
-
-    /// <summary>
-    /// Raises the scene control event.
-    /// </summary>
-    private void onKeyPressed()
-    {
-        if (Input.GetKeyDown(KeyCode.LeftControl) && Input.GetKey(KeyCode.S))
-            SaveScannerSettings();
-        else if (Input.GetKeyDown(KeyCode.LeftControl) && Input.GetKey(KeyCode.L))
-            LoadScannerSettings();
-    }
-
-    /// <summary>
-    /// Reloads configuration / keystone settings when the scene is refreshed.
-    /// </summary>
-    void OnReload()
-    {
-        Debug.Log("Scanner config was reloaded!");
-        MakeSampleSpheres();
-        LoadScannerSettings();
-    }
-
-    void OnSave()
-    {
-        SaveScannerSettings();
-    }
+    /////    INIT    /////
 
     /// <summary>
     /// Initialization
@@ -161,7 +145,7 @@ public class InputScanners : MonoBehaviour
         allColors = new Color[numOfScannersX * numOfScannersY];
         currentIds = new int[numOfScannersX / gridSize, numOfScannersY / gridSize];
         colorClassifier = new ColorClassifier();
-        idBuffer = new Queue<int>[numOfScannersX * numOfScannersY];
+        scanBuffer = new Queue<int>[numOfScannersX * numOfScannersY];
 
         MakeScanners();
         // MakeBricks();
@@ -169,7 +153,7 @@ public class InputScanners : MonoBehaviour
         MakeSampleSpheres();
 
         // Create UX scanners
-        dock = new Dock(this.gameObject, gridSize, scannerScale);
+        dock = new InputDock(this.gameObject, gridSize, scannerScale);
 
         // Original keystoned object with webcam texture / video
         cameraKeystonedQuad = GameObject.Find("CameraKeystoneQuad");
@@ -177,6 +161,327 @@ public class InputScanners : MonoBehaviour
         LoadScannerSettings();
 
         EventManager.TriggerEvent("scannersInitialized");
+    }
+
+    /////    UPDATES    /////
+
+    /// <summary>
+    /// Update this instance.
+    /// </summary>
+    void Update()
+    {
+        // if (useWebcam || shouldReassignTexture)
+            AssignRenderTexture();
+        UpdateScanners();
+        gridParent.transform.localPosition = new Vector3(0,0,0);
+        OnKeyPressed();
+    }
+    
+    /// <summary>
+    /// Update scanners (get latest color)
+    /// </summary>
+    private void UpdateScanners()
+    {
+        if (updateScannerObjects)
+        {
+            UpdateScannerObjects();
+            updateScannerObjects = false;
+        }
+
+        if (colorCalibration || setup)
+            CalibrateColors();
+
+        // Assign scanner colors
+        ScanColors();
+
+        // if (updateBldgs)
+        // {
+            // UpdateBldgs();
+            // updateBldgs = false;
+        // }
+
+        // Update slider & dock readings
+        // if (enableUI)
+        // {
+            dock.UpdateDock();
+            foreach(var slider in sliders)
+                slider.UpdateSlider();
+        // }
+
+        if (debug)
+        {
+            PrintMatrix();
+            debug=false;
+        }
+
+        if (setup)
+            setup = false;
+
+        if (Time.frameCount % 60 == 0)
+            System.GC.Collect();
+        
+        // prepare json
+        
+    }
+    
+    /// <summary>
+    /// Update all scanner objects
+    /// </summary>
+    private void UpdateScannerObjects()
+    {
+        for (int x = 0; x < numOfScannersX; x++)
+        {
+            for (int y = 0; y < numOfScannersY; y++)
+            {
+                scannersList[x, y].transform.localScale = new Vector3(scannerScale, scannerScale, scannerScale);
+                float offset = scanQuad.GetComponent<Renderer>().bounds.size.x * 0.5f - 0.035f;
+                scannersList[x, y].transform.localPosition = new Vector3(x * scannerScale * 2 - offset, 0.2f, y * scannerScale * 2 - offset);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Scans the colors.
+    /// </summary>
+    private void ScanColors()
+    {
+        string key = "";
+        for (int i = 0; i < numOfScannersX; i += gridSize)
+        {
+            for (int j = 0; j < numOfScannersY; j += gridSize)
+            {
+                int currID = GetGridId(key, i, j, ref scannersList, true);
+                if (currentIds[i / gridSize, j / gridSize] != currID)
+                {
+                    int oldID = currentIds[i / gridSize, j / gridSize];
+                    currentIds[i / gridSize, j / gridSize] = currID;
+                    // if (currID==6)
+                    //     UpdateRoad(i / gridSize, j / gridSize);
+                    // else
+                    //     UpdateBldg(i / gridSize, j / gridSize);
+                    // if (oldID==6 || currID==6)
+                    //     RefreshRoads(i / gridSize, j / gridSize);
+                    // updateBldgs = true;
+                }
+            }
+        }
+
+        if (setup)
+        {
+            if (debug)
+                colorClassifier.SortColors(allColors, colorSpaceParent);
+            colorClassifier.Create3DColorPlot(allColors, colorSpaceParent);
+        }
+        if (colorCalibration)
+            colorClassifier.Update3DColorPlot(allColors, colorSpaceParent);
+    }
+
+    /// <summary>
+    /// Finds the current id for a block at i, j in the grid or for the dock module.
+    /// </summary>
+    /// <returns>`int` The current identifier.</returns>
+    /// <param name="key">Key.</param>
+    /// <param name="i">The index.</param>
+    /// <param name="j">J.</param>
+    public int GetGridId(string key, int i, int j, ref GameObject[,] currScanners, bool isGrid = true)
+    {
+        key = "";
+        for (int k = 0; k < gridSize; k++)
+        {
+            for (int m = 0; m < gridSize; m++)
+            {
+                key += GetColorIdByCoord(i + k, j + m, ref currScanners, isGrid);
+            }
+        }
+        // Debug.Log(i+"_"+j+": "+key);
+
+        // keys read counterclockwise
+        string newKey = "" + key[1] + key[0] + key[2] + key[3];
+        newKey = new string(newKey.ToCharArray().Reverse().ToArray());
+
+        if (idList.ContainsKey(newKey))
+        {
+            return (int)idList[newKey];
+        }
+        else
+        { // check rotation independence & return key if it is a rotation
+            string keyConcat = newKey + newKey;
+            // foreach (string idKey in idList.Keys)
+            // {
+            //     if (keyConcat.Contains(idKey))
+            //         return (int)idList[idKey];
+            // }
+            for (int n=1;n<4;n++)
+                if (idList.ContainsKey(keyConcat.Substring(n,4)))
+                    return (int)idList[keyConcat.Substring(n,4)];
+        }
+        return -1;
+    }
+    
+    /// <summary>
+    /// Finds the color below scanner item[i, j].
+    /// </summary>
+    /// <param name="i">The row index.</param>
+    /// <param name="j">The column index.</param>
+    public int GetColorIdByCoord(int i, int j, ref GameObject[,] currScanners, bool isGrid = true)
+    {
+        var scanner = currScanners[i, j];
+        var scannerRenderer = scanner.GetComponent<Renderer>();
+        if (ScannerIsAboveTexture(scanner) && hitTex)
+        {
+            var texBounds = scanQuad.GetComponent<Renderer>().bounds;
+            var localScanPos = scanner.transform.position - texBounds.min;
+
+            Color pixel = hitTex.GetPixelBilinear(localScanPos.x / texBounds.size.x, localScanPos.z / texBounds.size.z);
+
+            // int _locX = Mathf.RoundToInt(hit.textureCoord.x * hitTex.width);
+            // int _locY = Mathf.RoundToInt(hit.textureCoord.y * hitTex.height);
+            // Color pixel = hitTex.GetPixel(_locX, _locY);
+            int currID = colorClassifier.GetClosestColorId(pixel);
+
+            if (isGrid)
+            {
+                if (useScanBuffer)
+                    currID = GetAverageColorId(i, j, currID);
+
+                // Save colors for 3D visualization
+                if (setup || colorCalibration)
+                    allColors[i + numOfScannersX * j] = pixel;
+            }
+
+            Color minColor;
+
+            // Display 3D colors & use scanned colors for scanner color
+            if (colorCalibration && isGrid)
+                minColor = pixel;
+            else
+                minColor = colorClassifier.GetColor(currID);
+
+            if (debug)
+            {
+                // Could improve by drawing only if sphere locations change
+                Vector3 origin = colorSpaceParent.transform.position;
+                Debug.DrawLine(origin + new Vector3(pixel.r, pixel.g, pixel.b), origin + new Vector3(sampleColors[currID].r, sampleColors[currID].g, sampleColors[currID].b), pixel, 1, false);
+            }
+
+            // Paint scanner with the found color 
+            // if (scannerRenderer.material.color != minColor)
+            // {
+                scannerRenderer.material.color = minColor;
+            // }
+
+            return currID;
+        }
+        else if (scannerRenderer.material.color != Color.magenta)
+            scannerRenderer.material.color = Color.magenta;
+        return -1;
+    }
+
+    /// <summary>
+    /// GetColorByScanner
+    /// </summary>
+    /// <param name="scanner">`GameObject` scanner</param>
+    /// <returns>`Color` color</returns>
+    public Color GetColorByScanner(GameObject scanner)
+    {
+        var scannerRenderer = scanner.GetComponent<Renderer>();
+        if (ScannerIsAboveTexture(scanner) && hitTex)
+        {
+            var texBounds = scanQuad.GetComponent<Renderer>().bounds;
+            var localScanPos = scanner.transform.position - texBounds.min;
+
+            Color pixel = hitTex.GetPixelBilinear(localScanPos.x / texBounds.size.x, localScanPos.z / texBounds.size.z);
+            scannerRenderer.material.color = pixel;
+            return pixel;
+        }
+        else
+        {
+            scannerRenderer.material.color = Color.magenta;
+            throw new ArgumentOutOfRangeException("Scanner is not over the texture");
+        }
+    }
+
+    /// <summary>
+    /// Check if scanner is above texture
+    /// </summary>
+    /// <param name="scanner">`GameObject` scanner</param>
+    /// <returns>`bool` True/False</returns>
+    private bool ScannerIsAboveTexture(GameObject scanner)
+    {
+        var scannerPos = scanner.transform.position;
+        var texBounds = scanQuad.GetComponent<Renderer>().bounds;
+
+        var containsX = scannerPos.x <= texBounds.center.x + texBounds.extents.x
+        && scannerPos.x >= texBounds.center.x - texBounds.extents.x;
+        var containsZ = scannerPos.z <= texBounds.center.z + texBounds.extents.z
+        && scannerPos.z >= texBounds.center.z - texBounds.extents.z;
+
+        return containsX && containsZ;
+    }
+
+    /// <summary>
+    /// Gets the average color ID from a given number of readings defined by _bufferSize
+    /// to reduce flickering in reading of video stream.
+    /// </summary>
+    private int GetAverageColorId(int i, int j, int currID)
+    {
+        int index = i * numOfScannersX + j;
+
+        if (scanBuffer[index] == null)
+            scanBuffer[index] = new Queue<int>();
+
+        if (scanBuffer[index].Count < scanBufferSize)
+            scanBuffer[index].Enqueue(currID);
+        else
+        {
+            scanBuffer[index].Dequeue();
+            scanBuffer[index].Enqueue(currID);
+        }
+
+        return (int)(scanBuffer[index].Average());
+    }
+    
+    /// <summary>
+    /// Calibrates the colors based on sample points.
+    /// </summary>
+    private void CalibrateColors()
+    {
+        foreach (var colorSphere in colorRefSpheres)
+        {
+            UpdateSphereColor(colorSphere.Value);
+            sampleColors[(int)colorSphere.Key] = colorSphere.Value.GetComponent<Renderer>().material.color;
+        }
+
+        colorClassifier.SetSampledColors(ColorClassifier.SampleColor.RED, 0, sampleColors[(int)ColorClassifier.SampleColor.RED]);
+        colorClassifier.SetSampledColors(ColorClassifier.SampleColor.BLACK, 0, sampleColors[(int)ColorClassifier.SampleColor.BLACK]);
+        colorClassifier.SetSampledColors(ColorClassifier.SampleColor.WHITE, 0, sampleColors[(int)ColorClassifier.SampleColor.WHITE]);
+    }
+    
+    /// <summary>
+    /// Update the color of a sphere based on its location
+    /// </summary>
+    /// <param name="sphere">`GameObject` sphere object</param>
+    private void UpdateSphereColor(GameObject sphere)
+    {
+        sphere.GetComponent<Renderer>().material.color = new Color(sphere.transform.localPosition.x, sphere.transform.localPosition.y, sphere.transform.localPosition.z);
+    }
+
+    /////    MAKERS    /////
+
+    /// <summary>
+    /// Assigns the render texture to a Texture2D.
+    /// </summary>
+    private void AssignRenderTexture()
+    {
+        RenderTexture rt = scanQuad.transform.GetComponent<Renderer>().material.mainTexture as RenderTexture;
+        RenderTexture.active = rt;
+        if (!hitTex)
+            hitTex = new Texture2D(rt.width, rt.height, TextureFormat.RGB24, false);
+        hitTex.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
+
+        if (shouldReassignTexture)
+            shouldReassignTexture = false;
+        RenderTexture.active = null;
     }
 
     /// <summary>
@@ -354,7 +659,6 @@ public class InputScanners : MonoBehaviour
         return result;
     }
 
-    
     /// <summary>
     /// Create a visualization brick for dock
     /// </summary>
@@ -400,6 +704,8 @@ public class InputScanners : MonoBehaviour
         colorRefSpheres[color].transform.localPosition = new Vector3(c.r, c.g, c.b);
     }
 
+    /////    SETTINGS    /////
+
     /// <summary>
     /// Loads the color sampler objects from a JSON.
     /// </summary>
@@ -430,10 +736,10 @@ public class InputScanners : MonoBehaviour
 
         dock.SetDockPosition(colorSettings.dockPosition);
         
-        sliders = new List<LegoSlider>();
+        sliders = new List<InputSlider>();
         for(int i=0;i<colorSettings.sliderSettings.Count;i++)
         {
-            sliders.Add(new LegoSlider(this.gameObject, scannerScale));
+            sliders.Add(new InputSlider(this.gameObject, scannerScale));
             sliders[i].SetSliderSettings(i,colorSettings.sliderSettings[i]);
         }
     }
@@ -475,4 +781,60 @@ public class InputScanners : MonoBehaviour
         JsonParser.writeJSON(colorSettingsFilename, dataAsJson);
     }
 
+    /////    LISTENERS    /////
+
+    /// <summary>
+    /// Raises the scene control event.
+    /// </summary>
+    private void OnKeyPressed()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftControl) && Input.GetKey(KeyCode.S))
+            SaveScannerSettings();
+        else if (Input.GetKeyDown(KeyCode.LeftControl) && Input.GetKey(KeyCode.L))
+            LoadScannerSettings();
+    }
+
+    /// <summary>
+    /// Reloads configuration / keystone settings when the scene is refreshed.
+    /// </summary>
+    void OnReload()
+    {
+        Debug.Log("Scanner config was reloaded!");
+        MakeSampleSpheres();
+        LoadScannerSettings();
+    }
+
+    void OnSave()
+    {
+        SaveScannerSettings();
+    }
+
+    /////    DEBUG    /////
+    
+    /// <summary>
+    /// Print the ID matrix.
+    /// </summary>
+    private void PrintMatrix()
+    {
+        string matrix = "";
+
+        if ((int)(currentIds.Length) <= 1)
+        {
+            Debug.Log("Empty dictionary.");
+            return;
+        }
+        for (int j = currentIds.GetLength(1)-1; j >= 0; j--)
+        {
+            for (int i = 0; i < currentIds.GetLength(0); i++)
+            {
+                if (currentIds[i, j] >= 0)
+                    matrix += " ";
+                matrix += currentIds[i, j] + "";
+                if (currentIds[i, j] >= 0)
+                    matrix += " ";
+            }
+            matrix += "\n";
+        }
+        Debug.Log(matrix);
+    }
 }
