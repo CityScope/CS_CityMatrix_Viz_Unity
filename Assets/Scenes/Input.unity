@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.34928188, g: 0.36637935, b: 0.42587143, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -518,7 +518,8 @@ MonoBehaviour:
   colorCalibration: 0
   gridSizeX: 16
   gridSizeY: 16
-  useWebcam: 0
+  gridSize: 2
+  useWebcam: 1
   useScanBuffer: 0
   scanBufferSize: 50
   scanQuad: {fileID: 985720258}

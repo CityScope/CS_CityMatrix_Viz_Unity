@@ -5,10 +5,20 @@
 using System;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Networking;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.IO;
+using System.Text;
+using SimpleJSON;
+
+[System.Serializable]
+public class InputJSON
+{
+
+}
 
 public class InputScanners : MonoBehaviour
 {
@@ -21,6 +31,8 @@ public class InputScanners : MonoBehaviour
     public int gridSizeX;
     /// <summary>Num of tabletop grids on y axis</summary>
     public int gridSizeY;
+    /// <summary>Size of each grid (2 means 2x2 color scans for one cell)</summary>
+    public int gridSize = 2;
     /// <summary>Use webcam or not (development mode)</summary>
     public bool useWebcam;
     /// <summary>Use scan buffer to get more accurate color scan</summary>
@@ -48,8 +60,6 @@ public class InputScanners : MonoBehaviour
     public static GameObject[,] bldgList;
     /// <summary>All scanner objects</summary>
     public static GameObject[,] scannersList;
-    
-
     /// <summary>Scale of scanners</summary>
     public float scannerScale = 0.015f;
     public float scannerOffset = -0.035f;
@@ -59,9 +69,8 @@ public class InputScanners : MonoBehaviour
     public float sphereScale = 0.1f;
 
 
-    ///// Private Variables
-    /// <summary>Size of each grid (2 means 2x2 color scans for one cell)</summary>
-    private int gridSize = 2;
+    /////    Private Variables    /////
+    
     /// <summary>Num of color scanners on x axis</summary>
     private int numOfScannersX;
     /// <summary>Num of color scanners on y axis</summary>
@@ -161,6 +170,8 @@ public class InputScanners : MonoBehaviour
         LoadScannerSettings();
 
         EventManager.TriggerEvent("scannersInitialized");
+        StartCoroutine(postInput());
+        // InvokeRepeating("postInput", 2.0f, 0.3f);
     }
 
     /////    UPDATES    /////
@@ -218,10 +229,14 @@ public class InputScanners : MonoBehaviour
             setup = false;
 
         if (Time.frameCount % 60 == 0)
+        {
+            // Debug.Log(Time.frameCount);
+            // prepare json
+            // JSONNode inputJSON = getJSON();
+            // if (hitTex)
+            // Debug.Log(inputJSON);
             System.GC.Collect();
-        
-        // prepare json
-        
+        }
     }
     
     /// <summary>
@@ -464,6 +479,92 @@ public class InputScanners : MonoBehaviour
     private void UpdateSphereColor(GameObject sphere)
     {
         sphere.GetComponent<Renderer>().material.color = new Color(sphere.transform.localPosition.x, sphere.transform.localPosition.y, sphere.transform.localPosition.z);
+    }
+
+    IEnumerator postInput()
+    {   
+        while(true)
+        {
+            Debug.Log("postInput!");
+            if (hitTex)
+            {
+                Debug.Log("hitTex!");
+                JSONNode postData = getJSON();
+                using(UnityWebRequest request = new UnityWebRequest("https://cityio.media.mit.edu/api/table/update/UnityTest_in", "POST"))
+                {
+                    byte[] byteData = Encoding.UTF8.GetBytes(postData.ToString());
+                    request.uploadHandler = (UploadHandler) new UploadHandlerRaw(byteData);
+                    request.downloadHandler = (DownloadHandler) new DownloadHandlerBuffer();
+                    request.SetRequestHeader("Content-Type", "application/json");
+                    request.SetRequestHeader("charset", "utf-8");
+                    request.chunkedTransfer = false; 
+                    yield return request.Send();
+                    if (request.isNetworkError || request.isHttpError)
+                        Debug.LogError(request.error);
+                    else
+                        Debug.Log("Post complete!");
+                }
+            }
+            yield return new WaitForSeconds(1.0f);
+        }
+    }
+
+    private JSONNode getJSON()
+    {
+        JSONNode tempJSON = new JSONObject();
+        tempJSON["header"]["name"] = "CityMatrix Unity Test";
+        tempJSON["header"]["spatial"]["nrows"] = gridSizeX;
+        tempJSON["header"]["spatial"]["ncols"] = gridSizeY;
+        tempJSON["header"]["spatial"]["physical_longitude"] = 0;
+        tempJSON["header"]["spatial"]["physical_latitude"] = 0;
+        tempJSON["header"]["spatial"]["longitude"] = 0;
+        tempJSON["header"]["spatial"]["latitude"] = 0;
+        tempJSON["header"]["spatial"]["cellSize"] = gridSize;
+        tempJSON["header"]["spatial"]["rotation"] = 0;
+        tempJSON["header"]["owner"]["name"] = "Mr Potato Head";
+        tempJSON["header"]["owner"]["title"] = "Potato";
+        tempJSON["header"]["owner"]["institute"] = "City Science Group";
+        tempJSON["header"]["block"] = new JSONArray();
+        tempJSON["header"]["block"].Add("type");
+        tempJSON["header"]["block"].Add("rot");
+        tempJSON["header"]["mapping"]["type"]["-1"] = "EMPTY";
+        tempJSON["header"]["mapping"]["type"]["0"] = "RL";
+        tempJSON["header"]["mapping"]["type"]["1"] = "RM";
+        tempJSON["header"]["mapping"]["type"]["2"] = "RS";
+        tempJSON["header"]["mapping"]["type"]["3"] = "OL";
+        tempJSON["header"]["mapping"]["type"]["4"] = "OM";
+        tempJSON["header"]["mapping"]["type"]["5"] = "OS";
+        tempJSON["header"]["mapping"]["type"]["6"] = "ROAD";
+        tempJSON["header"]["mapping"]["type"]["7"] = "PARK";
+        tempJSON["header"]["mapping"]["rot"]["0"] = 0;
+        tempJSON["header"]["mapping"]["rot"]["1"] = 90;
+        tempJSON["header"]["mapping"]["rot"]["2"] = 180;
+        tempJSON["header"]["mapping"]["rot"]["3"] = 270;
+        tempJSON["grid"] = new JSONArray();
+        // Since the origin of coordinates is bottom left corner (X+ Right, Y+ Up, Y first)
+        // but CityIO standard is top left corner (X+ Right, Y+ Down, X first), needs conversion
+        int counter = 0;
+        for (int y = currentIds.GetLength(1)-1; y>=0; y--)
+        {
+            for (int x = 0; x < currentIds.GetLength(0); x++)
+            {
+                tempJSON["grid"][counter]["type"] = currentIds[x,y];
+                tempJSON["grid"][counter]["rot"] = 0;
+                counter++;
+            }
+        }
+        tempJSON["objects"]["AIWeights"]["density"] = sliders[7].GetSliderValue();
+        tempJSON["objects"]["AIWeights"]["diversity"] = sliders[6].GetSliderValue();
+        tempJSON["objects"]["AIWeights"]["energy"] = sliders[5].GetSliderValue();
+        tempJSON["objects"]["AIWeights"]["traffic"] = sliders[4].GetSliderValue();
+        tempJSON["objects"]["AIWeights"]["solar"] = sliders[3].GetSliderValue();
+        tempJSON["objects"]["dockID"] = dock.GetDockId();
+        tempJSON["objects"]["dockRot"] = 0;
+        tempJSON["objects"]["heatmap"] = sliders[1].GetSliderValue();
+        tempJSON["objects"]["density"] = sliders[0].GetSliderValue();
+        tempJSON["objects"]["toggle"] = (sliders[2].GetSliderValue() == 1);
+        tempJSON["objects"]["timestamp"] = Math.Truncate((DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalMilliseconds);
+        return tempJSON;
     }
 
     /////    MAKERS    /////
