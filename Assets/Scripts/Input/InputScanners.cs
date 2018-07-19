@@ -5,6 +5,7 @@
 using System;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Networking;
 using System.Collections;
 using System.Collections.Generic;
@@ -22,7 +23,9 @@ public class InputJSON
 
 public class InputScanners : MonoBehaviour
 {
-    ///// Public Variables
+    /////    Public Variables    /////
+    
+    [Header("[Setup]")]
     /// <summary>Debug mode switch</summary>
     public bool debug = false;
     /// <summary>Color calibration switch</summary>
@@ -33,12 +36,33 @@ public class InputScanners : MonoBehaviour
     public int gridSizeY;
     /// <summary>Size of each grid (2 means 2x2 color scans for one cell)</summary>
     public int gridSize = 2;
+    public float dataPostingInterval = 0.3f;
     /// <summary>Use webcam or not (development mode)</summary>
     public bool useWebcam;
+    
+    [Header("[Scanner Settings]")]
     /// <summary>Use scan buffer to get more accurate color scan</summary>
     public bool useScanBuffer;
     /// <summary>Size of scan buffer</summary>
+    [Range(0,50)]
     public int scanBufferSize = 50;
+    /// <summary>Scale of scanners</summary>
+    public float scannerScale = 0.015f;
+    public float scannerOffset = -0.035f;
+    public float bldgScale = 0.0315f;
+    public float bldgGap = 0.0035f;
+    public float bldgOffset = -0.282f;
+    public float sphereScale = 0.1f;
+
+    [Header("[Color Settings]")]
+    /// <summary>Num of sample colors for calibration</summary>
+    public int numOfColors = 3;
+    /// <summary>Sample colors for calibration</summary>
+    public Color[] sampleColors;
+    /// <summary>Current ID scanned from each scanner</summary>
+    public string colorSettingsFilename = "_sampleColorSettings.json";
+
+    [Header("[Object & Prefab Settings]")]
     /// <summary>Was`keystonedQuad`; Grid image after keystoning (ready for scan)</summary>
     public GameObject scanQuad;
     /// <summary>Parent of scanners</summary>
@@ -49,24 +73,6 @@ public class InputScanners : MonoBehaviour
     public GameObject colorSpaceParent;
     /// <summary>Prefab for scanners</summary>
     public GameObject MarkerPrefab;
-    /// <summary>Num of sample colors for calibration</summary>
-    public int numOfColors = 3;
-    /// <summary>Sample colors for calibration</summary>
-    public Color[] sampleColors;
-    /// <summary>Current ID scanned from each scanner</summary>
-    public string colorSettingsFilename = "_sampleColorSettings.json";
-    public int[,] currentIds;
-    /// <summary>All building objects</summary>
-    public static GameObject[,] bldgList;
-    /// <summary>All scanner objects</summary>
-    public static GameObject[,] scannersList;
-    /// <summary>Scale of scanners</summary>
-    public float scannerScale = 0.015f;
-    public float scannerOffset = -0.035f;
-    public float bldgScale = 0.0315f;
-    public float bldgGap = 0.0035f;
-    public float bldgOffset = -0.282f;
-    public float sphereScale = 0.1f;
 
 
     /////    Private Variables    /////
@@ -77,11 +83,11 @@ public class InputScanners : MonoBehaviour
     private int numOfScannersY;
     /// <summary>setup record</summary>
     private bool setup = true;
+    private bool needToPost = false;
     /// <summary>Should reassign texture?</summary>
     private bool shouldReassignTexture = true;
     /// <summary>Should update scanner</summary>
     private bool updateScannerObjects = true;
-
     /// <summary>Dock scanner</summary>
     private InputDock dock;
     /// <summary>List of sliders (scanners)</summary>
@@ -92,6 +98,12 @@ public class InputScanners : MonoBehaviour
     private GameObject cameraKeystonedQuad;
     /// <summary>Texture for keystoneQuad ? </summary>
     private Texture2D hitTex;
+    private RenderTexture rt;
+    private int[,] currentIds;
+    /// <summary>All building objects</summary>
+    private static GameObject[,] bldgList;
+    /// <summary>All scanner objects</summary>
+    private static GameObject[,] scannersList;
 
     /// <summary>Color Settings</summary>
     private ColorSettings colorSettings;
@@ -182,7 +194,7 @@ public class InputScanners : MonoBehaviour
     void Update()
     {
         // if (useWebcam || shouldReassignTexture)
-            AssignRenderTexture();
+        AssignRenderTexture();
         UpdateScanners();
         gridParent.transform.localPosition = new Vector3(0,0,0);
         OnKeyPressed();
@@ -203,7 +215,7 @@ public class InputScanners : MonoBehaviour
             CalibrateColors();
 
         // Assign scanner colors
-        ScanColors();
+        needToPost = needToPost || ScanColors();
 
         // if (updateBldgs)
         // {
@@ -222,7 +234,7 @@ public class InputScanners : MonoBehaviour
         if (debug)
         {
             PrintMatrix();
-            debug=false;
+            // debug=false;
         }
 
         if (setup)
@@ -258,9 +270,10 @@ public class InputScanners : MonoBehaviour
     /// <summary>
     /// Scans the colors.
     /// </summary>
-    private void ScanColors()
+    private bool ScanColors()
     {
         string key = "";
+        bool hasUpdate = false;
         for (int i = 0; i < numOfScannersX; i += gridSize)
         {
             for (int j = 0; j < numOfScannersY; j += gridSize)
@@ -268,7 +281,7 @@ public class InputScanners : MonoBehaviour
                 int currID = GetGridId(key, i, j, ref scannersList, true);
                 if (currentIds[i / gridSize, j / gridSize] != currID)
                 {
-                    int oldID = currentIds[i / gridSize, j / gridSize];
+                    // int oldID = currentIds[i / gridSize, j / gridSize];
                     currentIds[i / gridSize, j / gridSize] = currID;
                     // if (currID==6)
                     //     UpdateRoad(i / gridSize, j / gridSize);
@@ -277,6 +290,7 @@ public class InputScanners : MonoBehaviour
                     // if (oldID==6 || currID==6)
                     //     RefreshRoads(i / gridSize, j / gridSize);
                     // updateBldgs = true;
+                    hasUpdate = true;
                 }
             }
         }
@@ -289,6 +303,8 @@ public class InputScanners : MonoBehaviour
         }
         if (colorCalibration)
             colorClassifier.Update3DColorPlot(allColors, colorSpaceParent);
+        
+        return hasUpdate;
     }
 
     /// <summary>
@@ -485,10 +501,10 @@ public class InputScanners : MonoBehaviour
     {   
         while(true)
         {
-            Debug.Log("postInput!");
-            if (hitTex)
+            // Debug.Log("postInput!");
+            if (hitTex && needToPost)
             {
-                Debug.Log("hitTex!");
+                // Debug.Log("hitTex!");
                 JSONNode postData = getJSON();
                 using(UnityWebRequest request = new UnityWebRequest("https://cityio.media.mit.edu/api/table/update/UnityTest_in", "POST"))
                 {
@@ -502,10 +518,12 @@ public class InputScanners : MonoBehaviour
                     if (request.isNetworkError || request.isHttpError)
                         Debug.LogError(request.error);
                     else
-                        Debug.Log("Post complete!");
+                        GameObject.Find("JSONtext").GetComponent<Text>().text = postData.ToString();
+                        // Debug.Log("Post complete!");
                 }
+                needToPost = false;
             }
-            yield return new WaitForSeconds(1.0f);
+            yield return new WaitForSeconds(dataPostingInterval);
         }
     }
 
@@ -574,10 +592,14 @@ public class InputScanners : MonoBehaviour
     /// </summary>
     private void AssignRenderTexture()
     {
-        RenderTexture rt = scanQuad.transform.GetComponent<Renderer>().material.mainTexture as RenderTexture;
+        if (!rt)
+        {
+            rt = scanQuad.transform.GetComponent<Renderer>().material.mainTexture as RenderTexture;
+            rt.antiAliasing = 1;
+        }
         RenderTexture.active = rt;
         if (!hitTex)
-            hitTex = new Texture2D(rt.width, rt.height, TextureFormat.RGB24, false);
+            hitTex = new Texture2D(rt.width, rt.height);
         hitTex.ReadPixels(new Rect(0, 0, rt.width, rt.height), 0, 0);
 
         if (shouldReassignTexture)

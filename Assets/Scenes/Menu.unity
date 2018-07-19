@@ -337,6 +337,7 @@ GameObject:
   - component: {fileID: 115146682}
   - component: {fileID: 115146681}
   - component: {fileID: 115146680}
+  - component: {fileID: 115146683}
   m_Layer: 5
   m_Name: Button_Input
   m_TagString: Untagged
@@ -401,7 +402,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 115146681}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 115146683}
+        m_MethodName: InputScene
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &115146681
@@ -438,6 +450,17 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 115146678}
   m_CullTransparentMesh: 0
+--- !u!114 &115146683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 115146678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dca2cde5f0b9f894ca997b42b512e8af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &273865570
 GameObject:
   m_ObjectHideFlags: 0
@@ -1453,14 +1476,14 @@ AudioListener:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 896489852}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!124 &896489854
 Behaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 896489852}
-  m_Enabled: 1
+  m_Enabled: 0
 --- !u!20 &896489855
 Camera:
   m_ObjectHideFlags: 0
@@ -1494,11 +1517,11 @@ Camera:
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 3
-  m_HDR: 1
-  m_AllowMSAA: 1
+  m_HDR: 0
+  m_AllowMSAA: 0
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
-  m_OcclusionCulling: 1
+  m_OcclusionCulling: 0
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
 --- !u!4 &896489856
@@ -1682,6 +1705,7 @@ GameObject:
   - component: {fileID: 1029467689}
   - component: {fileID: 1029467688}
   - component: {fileID: 1029467692}
+  - component: {fileID: 1029467693}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1775,6 +1799,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f1fc23f4ea0a0814197ee11215701cc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  settings:
+    screenDisplay: 0
+    projectorDisplay: 0
+--- !u!114 &1029467693
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1029467687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de5bd352b1b3f9444be15bc5ee57c36a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1077111900

@@ -18,7 +18,7 @@ public class FPSDisplay : MonoBehaviour
 
         Rect rect = new Rect(0, 0, w, h * 2 / 200);
         style.alignment = TextAnchor.UpperRight;
-        style.fontSize = h * 2 / 200;
+        style.fontSize = h * 5 / 100;
         style.normal.textColor = new Color(1.0f, 1.0f, 1.0f, 0.7f);
         float msec = deltaTime * 1000.0f;
         float fps = 1.0f / deltaTime;
