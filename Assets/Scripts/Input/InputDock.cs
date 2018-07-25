@@ -30,17 +30,19 @@ public class InputDock : InputLegoUI {
 	/// <summary>
 	/// Updates the dock ID scanner.
 	/// </summary>
-	public void UpdateDock() {
+	public bool UpdateDock() {
 		string key = "";
 		int currDockId = GameObject.Find("GridDecoder").GetComponentInChildren<InputScanners>().GetGridId (key, 0, 0, ref dockScanners, false);
 
 		// Notify CityIO
-		// if (dockId != currDockId) {
-		// 	dockId = currDockId;
+		if (dockId != currDockId) {
+			dockId = currDockId;
+			return true;
 		// 	EventManager.TriggerEvent ("dockChange");
 		// 	Debug.Log ("Dock ID changed to " + this.dockId);
 		// 	GameObject.Find ("GridDecoder").GetComponentInChildren<InputScanners>().RefreshDockText(this.dockId);
-		// }
+		}
+		return false;
 	}
 
 	public Vector3 GetDockPosition() {

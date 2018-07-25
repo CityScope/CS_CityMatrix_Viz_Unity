@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.3516095, g: 0.3699478, b: 0.43116748, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -124,6 +124,7 @@ GameObject:
   - component: {fileID: 95386116}
   - component: {fileID: 95386115}
   - component: {fileID: 95386114}
+  - component: {fileID: 95386118}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -207,6 +208,17 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 1}
   m_SizeDelta: {x: 800, y: 600}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &95386118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 95386113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de5bd352b1b3f9444be15bc5ee57c36a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &187275003
 GameObject:
   m_ObjectHideFlags: 0
@@ -216,7 +228,6 @@ GameObject:
   m_Component:
   - component: {fileID: 187275005}
   - component: {fileID: 187275004}
-  - component: {fileID: 187275006}
   m_Layer: 0
   m_Name: GridDecoder
   m_TagString: Untagged
@@ -242,7 +253,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 187275003}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 5}
+  m_LocalPosition: {x: -2, y: 0, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1224737417}
@@ -250,17 +261,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &187275006
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 187275003}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: de5bd352b1b3f9444be15bc5ee57c36a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &431304034
 GameObject:
   m_ObjectHideFlags: 0
@@ -306,7 +306,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 20
   field of view: 60
   orthographic: 1
   orthographic size: 5
@@ -841,16 +841,12 @@ MonoBehaviour:
   scanBufferSize: 50
   scannerScale: 0.015
   scannerOffset: -0.035
-  bldgScale: 0.0315
-  bldgGap: 0.0035
-  bldgOffset: -0.282
   sphereScale: 0.1
   numOfColors: 3
   sampleColors: []
   colorSettingsFilename: sampleColorSettings_CityMatrix.json
   scanQuad: {fileID: 985720258}
   gridParent: {fileID: 2048754525}
-  bldgParent: {fileID: 0}
   colorSpaceParent: {fileID: 1100506052}
   MarkerPrefab: {fileID: 1903330009885486, guid: f5fc524ca6965c647b092c9409dc120a,
     type: 2}
@@ -1197,6 +1193,7 @@ GameObject:
   - component: {fileID: 1827316896}
   - component: {fileID: 1827316895}
   - component: {fileID: 1827316894}
+  - component: {fileID: 1827316897}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -1271,6 +1268,18 @@ Camera:
   m_OcclusionCulling: 0
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &1827316897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1827316892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff26db721962cdf4a8edcdfa9a767d2a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  profile: {fileID: 11400000, guid: d7d89e6f812e7db4baa1875410cc0447, type: 2}
 --- !u!1 &1968341174
 GameObject:
   m_ObjectHideFlags: 0

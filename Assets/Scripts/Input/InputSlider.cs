@@ -25,7 +25,7 @@ public class InputSlider : InputLegoUI {
 	private Vector3 endPos;
 	private const int NUM_SCANNERS = 30;
 	private int numScanners;
-	public int value = -1;
+	public int value = 0;
 
 	// Number of ints the slider can return as valid values 
 	// i.e. 30 for 30 floors in building height calculation
@@ -53,7 +53,7 @@ public class InputSlider : InputLegoUI {
 		// this.range = range;
 		// this.startPos = startPos;
 		// this.endPos = endPos;
-		this.value = -1; // for init value
+		this.value = 0; // for init value
 		this.scannerScale = _scannerScale;
 
 		CreateScannerParent ("Slider parent", parentObject);
@@ -64,9 +64,9 @@ public class InputSlider : InputLegoUI {
 	/// <summary>
 	/// Updates the slider.
 	/// </summary>
-	public void UpdateSlider() {
+	public bool UpdateSlider() {
 		if (sliderScanners.GetLength (1) == 0)
-			return;
+			return false;
 
 		if (sliderStartObject.transform.position != sliderScanners [0, 0].transform.position || sliderEndObject.transform.position != sliderScanners [0, numScanners-1].transform.position)
 			CreateSlider (sliderScanners [0, 0].transform.localScale.x);
@@ -90,6 +90,8 @@ public class InputSlider : InputLegoUI {
 		if (needsUpdate && refColorIndex.Count > 0) {
 			RecomputeSliderValue (ref refColorIndex);
 		}
+
+		return needsUpdate;
 	}
 
 	/// <summary>

@@ -15,12 +15,6 @@ using System.IO;
 using System.Text;
 using SimpleJSON;
 
-[System.Serializable]
-public class InputJSON
-{
-
-}
-
 public class InputScanners : MonoBehaviour
 {
     /////    Public Variables    /////
@@ -49,9 +43,6 @@ public class InputScanners : MonoBehaviour
     /// <summary>Scale of scanners</summary>
     public float scannerScale = 0.015f;
     public float scannerOffset = -0.035f;
-    public float bldgScale = 0.0315f;
-    public float bldgGap = 0.0035f;
-    public float bldgOffset = -0.282f;
     public float sphereScale = 0.1f;
 
     [Header("[Color Settings]")]
@@ -67,8 +58,6 @@ public class InputScanners : MonoBehaviour
     public GameObject scanQuad;
     /// <summary>Parent of scanners</summary>
     public GameObject gridParent;
-    /// <summary>Parent of buildings</summary>
-    public GameObject bldgParent;
     /// <summary>Parent of color space</summary>
     public GameObject colorSpaceParent;
     /// <summary>Prefab for scanners</summary>
@@ -92,16 +81,12 @@ public class InputScanners : MonoBehaviour
     private InputDock dock;
     /// <summary>List of sliders (scanners)</summary>
     private List<InputSlider> sliders;
-    /// <summary>Dock visualization</summary>
-    private GameObject dockViz;
     /// <summary>cameraKeystonedQuad???????????????</summary>
     private GameObject cameraKeystonedQuad;
     /// <summary>Texture for keystoneQuad ? </summary>
     private Texture2D hitTex;
     private RenderTexture rt;
     private int[,] currentIds;
-    /// <summary>All building objects</summary>
-    private static GameObject[,] bldgList;
     /// <summary>All scanner objects</summary>
     private static GameObject[,] scannersList;
 
@@ -182,7 +167,7 @@ public class InputScanners : MonoBehaviour
         LoadScannerSettings();
 
         EventManager.TriggerEvent("scannersInitialized");
-        StartCoroutine(postInput());
+        StartCoroutine(PostInput());
         // InvokeRepeating("postInput", 2.0f, 0.3f);
     }
 
@@ -226,19 +211,22 @@ public class InputScanners : MonoBehaviour
         // Update slider & dock readings
         // if (enableUI)
         // {
-            dock.UpdateDock();
-            foreach(var slider in sliders)
-                slider.UpdateSlider();
+        needToPost = needToPost || dock.UpdateDock();
+        foreach(var slider in sliders)
+            needToPost = needToPost || slider.UpdateSlider();
+        // }
+        needToPost = true;
+        // if (debug)
+        // {
+        //     PrintMatrix();
+        //     // debug=false;
         // }
 
-        if (debug)
-        {
-            PrintMatrix();
-            // debug=false;
-        }
-
         if (setup)
+        {
+            needToPost = false;
             setup = false;
+        }
 
         if (Time.frameCount % 60 == 0)
         {
@@ -497,7 +485,7 @@ public class InputScanners : MonoBehaviour
         sphere.GetComponent<Renderer>().material.color = new Color(sphere.transform.localPosition.x, sphere.transform.localPosition.y, sphere.transform.localPosition.z);
     }
 
-    IEnumerator postInput()
+    IEnumerator PostInput()
     {   
         while(true)
         {
@@ -640,162 +628,6 @@ public class InputScanners : MonoBehaviour
     }
 
     /// <summary>
-    /// Create all bricks on the virtual tabletop 
-    /// </summary>
-    private void MakeBricks()
-    {
-        //currentIds
-        for (int x = 0; x < currentIds.GetLength(0); x++)
-        {
-            for (int y = 0; y < currentIds.GetLength(1); y++)
-            {
-                if (currentIds[x,y]!=6)
-                    MakeBldg(x,y);
-                else
-                    MakeRoad(x,y);
-            }
-        }
-    }
-
-    /// <summary>
-    /// Create a single building brick on the virtual tabletop at (x,y)
-    /// </summary>
-    /// <param name="x">Coord X</param>
-    /// <param name="y">Coord Y</param>
-    private void MakeBldg(int x, int y)
-    {
-        GameObject bldgTemp;
-        bldgTemp = MakeBldgObj("bldg_" + x + "_" + y, currentIds[x,y]);
-        bldgTemp.transform.parent = bldgParent.transform;
-        bldgTemp.transform.localScale = new Vector3(bldgScale, bldgScale, bldgScale);
-        bldgTemp.transform.localPosition = new Vector3(x * (bldgScale + bldgGap) + bldgScale/2 + bldgGap + bldgOffset, 
-            0f, y * (bldgScale + bldgGap) + bldgScale/2 + bldgGap + bldgOffset);
-        bldgTemp.transform.Rotate(0f, 180f, 0f);
-        bldgList[x, y] = bldgTemp;
-    }
-
-    /// <summary>
-    /// Create a single building object
-    /// </summary>
-    /// <param name="name">GameObject Name</param>
-    /// <param name="id">Optical Tag ID</param>
-    /// <returns>GameObject of a building brick with correct prefab</returns>
-    private GameObject MakeBldgObj(string name = "bldg", int id = -1)
-    {
-        string filename = "-1_black";
-        if (id==-1)
-            filename = "-1_green";
-        else if (id>=0 && id<6)
-            filename = id.ToString();
-        GameObject pPrefab = Resources.Load<GameObject>("Toppers/" + filename);
-        var bldg = GameObject.Instantiate(pPrefab);
-        bldg.name = name + "_" + id;
-        return bldg;
-    }
-
-    /// <summary>
-    /// Create a road brick on the virtual tabletop at (x,y)
-    /// </summary>
-    /// <param name="x">Coord X</param>
-    /// <param name="y">Coord Y</param>
-    private void MakeRoad(int x, int y)
-    {
-        GameObject bldgTemp;
-        List<int> roadTypes = CalcRoad(x,y);
-        GameObject newRoad = new GameObject("road_" + x + "_" + y + "_6");
-        for (int i=0;i<4;i++)
-            MakeRoadObj(newRoad, i, roadTypes[i]);
-        bldgTemp = newRoad;
-        bldgTemp.transform.parent = bldgParent.transform;
-        bldgTemp.transform.localScale = new Vector3(bldgScale, bldgScale, bldgScale);
-        bldgTemp.transform.localPosition = new Vector3(x * (bldgScale + bldgGap) + bldgScale/2 + bldgGap + bldgOffset, 
-            0f, y * (bldgScale + bldgGap) + bldgScale/2 + bldgGap + bldgOffset);
-        bldgTemp.transform.Rotate(0f, 0f, 0f);
-        bldgList[x, y] = bldgTemp;
-    }
-
-    /// <summary>
-    /// Make a road parent object that holds 4 prefab parts
-    /// </summary>
-    /// <param name="newRoad">Parent Road - prefab holder</param>
-    /// <param name="roadPart">Which prefab part is going to be instantiated</param>
-    /// <param name="roadType">Whether that direction is a path or a cul de sac (1 or 0)</param>
-    private void MakeRoadObj(GameObject newRoad, int roadPart, int roadType)
-    {
-        // string path = "Assets/Prefabs/Building/Toppers/Rd_";
-        string path = "Toppers/Rd_";
-        switch (roadPart)
-        {
-            case 0:
-                // path += "Up_" + roadType + ".fbx";
-                path += "Up_" + roadType;
-                break;
-            case 1:
-                // path += "Left_" + roadType + ".fbx";
-                path += "Left_" + roadType;
-                break;
-            case 2:
-                // path += "Down_" + roadType + ".fbx";
-                path += "Down_" + roadType;
-                break;
-            case 3:
-                // path += "Right_" + roadType + ".fbx";
-                path += "Right_" + roadType;
-                break;
-            default:
-                break;
-        }
-        GameObject obj = Resources.Load<GameObject>(path);
-        var roadObj = GameObject.Instantiate(obj);
-        roadObj.name = newRoad.name + "_" + roadPart;
-        roadObj.transform.parent = newRoad.transform;
-        roadObj.transform.localScale = new Vector3(1,1,1);
-        roadObj.transform.localPosition = new Vector3(0,0,0);
-    }
-
-    /// <summary>
-    /// Each road brick is made of 4 different prefabs. 
-    /// This method determains whether it's a path or a cul de sac for each prefab
-    /// </summary>
-    /// <param name="x">Coord X</param>
-    /// <param name="y">Coord Y</param>
-    /// <returns>A list of road types</returns>
-    private List<int> CalcRoad(int x, int y)
-    {
-        List<int> result = new List<int>();
-        if (y < currentIds.GetLength(1) - 1)
-            result.Add((currentIds[x,y+1] == 6)?1:0);
-        else
-            result.Add(1);
-        if (x > 0)
-            result.Add((currentIds[x-1,y] == 6)?1:0);
-        else
-            result.Add(1);
-        if (y > 0)
-            result.Add((currentIds[x,y-1] == 6)?1:0);
-        else
-            result.Add(1);
-        if (x < currentIds.GetLength(0) - 1)
-            result.Add((currentIds[x+1,y] == 6)?1:0);
-        else
-            result.Add(1);
-        return result;
-    }
-
-    /// <summary>
-    /// Create a visualization brick for dock
-    /// </summary>
-    /// <param name="id">Optical Tag ID</param>
-    private void MakeDock(int id)
-    {
-        dockViz = MakeBldgObj("dock_", id);
-        dockViz.transform.parent = bldgParent.transform.parent.transform;
-        dockViz.transform.localScale = new Vector3(bldgScale, bldgScale, bldgScale);
-        dockViz.transform.localPosition = new Vector3(0.282f, 0f, -0.1955f); //TODO: put this into settings
-        dockViz.transform.Rotate(0f, 180f, 0f);
-    }
-
-    /// <summary>
     /// Create all sample spheres.
     /// </summary>
     private void MakeSampleSpheres()
@@ -911,9 +743,9 @@ public class InputScanners : MonoBehaviour
     /// </summary>
     private void OnKeyPressed()
     {
-        if (Input.GetKeyDown(KeyCode.LeftControl) && Input.GetKey(KeyCode.S))
+        if (Input.GetKey(KeyCode.S))
             SaveScannerSettings();
-        else if (Input.GetKeyDown(KeyCode.LeftControl) && Input.GetKey(KeyCode.L))
+        else if (Input.GetKey(KeyCode.L))
             LoadScannerSettings();
     }
 

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.3516095, g: 0.3699478, b: 0.43116748, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1929,6 +1929,7 @@ GameObject:
   - component: {fileID: 1132548514}
   - component: {fileID: 1132548513}
   - component: {fileID: 1132548512}
+  - component: {fileID: 1132548515}
   m_Layer: 5
   m_Name: Button_Projector
   m_TagString: Untagged
@@ -1993,7 +1994,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1132548513}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1132548515}
+        m_MethodName: ProjectorScene
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1132548513
@@ -2030,6 +2042,17 @@ CanvasRenderer:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1132548510}
   m_CullTransparentMesh: 0
+--- !u!114 &1132548515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1132548510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd443c4b0f494344f9b969c625b184db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1174111123
 GameObject:
   m_ObjectHideFlags: 0

@@ -57,8 +57,12 @@ public class SScreenDropdown : MonoBehaviour {
 		Debug.Log("ScreenDropdown Value Changed to " + newIndex);
 		// PlayerPrefs.SetInt("UnitySelectMonitor", newIndex);
 		var display = Display.displays[newIndex];
-		Screen.SetResolution(display.systemWidth, display.systemHeight, Screen.fullScreen);
-		display.Activate();
+		if (!display.active)
+		{
+			// Screen.SetResolution(display.systemWidth, display.systemHeight, Screen.fullScreen);
+			display.Activate();
+			display.SetRenderingResolution(display.systemWidth, display.systemHeight);
+		}
 		// if (Camera.main)
 		// 	Camera.main.targetDisplay = newIndex;
 		Refresh();
