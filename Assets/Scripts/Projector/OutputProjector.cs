@@ -172,15 +172,21 @@ public class OutputProjector : MonoBehaviour {
                 {
                     case 1:
                         if (tempID>=0 && tempID<=5)
-                            makeDensity(x,y,tempCell["data"]["density"]);
+                            makeHeat(x,y,tempCell["data"]["density"],0.4f);
                         break;
                     case 2:
+                        makeHeat(x,y,tempCell["data"]["diversity"],0.4f);
                         break;
                     case 3:
+                        if (tempID>=0 && tempID<=5)
+                            makeHeat(x,y,tempCell["data"]["energy"],0.4f);
                         break;
                     case 4:
+                        if (tempID==6)
+                            makeHeat(x,y,tempCell["data"]["traffic"],0.25f);
                         break;
                     case 5:
+                        makeHeat(x,y,tempCell["data"]["solar"],0.3f,true);
                         break;
                     default:
                         break;
@@ -345,43 +351,30 @@ public class OutputProjector : MonoBehaviour {
         dockViz.transform.Rotate(0f, 180f, 0f);
     }
 
-    private void makeDensity(int x, int y, float val)
+    private void makeHeat(int x, int y, float val, float a, bool greenblue = false)
     {
         GameObject heatTemp;
-        heatTemp = MakeHeatObj("density_" + x + "_" + y, val);
+        heatTemp = MakeHeatObj("heat_" + x + "_" + y, val, a, greenblue);
         heatTemp.transform.parent = bldgParent.transform;
-        heatTemp.transform.localScale = new Vector3(bldgScale, bldgScale, bldgScale);
+        heatTemp.transform.localScale = new Vector3(bldgScale, 0.001f, bldgScale);
         heatTemp.transform.localPosition = new Vector3(x * (bldgScale + bldgGap) + bldgScale/2 + bldgGap + bldgOffset, 
-            0.1f, y * (bldgScale + bldgGap) + bldgScale/2 + bldgGap + bldgOffset);
+            0.01f, y * (bldgScale + bldgGap) + bldgScale/2 + bldgGap + bldgOffset);
         heatTemp.transform.Rotate(0f, 180f, 0f);
         heatList[x, y] = heatTemp;
     }
 
-    private void makeDiversity()
+    private GameObject MakeHeatObj(string name = "heat", float val = 0f, float a = 0.25f, bool greenblue = false)
     {
-        
-    }
-
-    private void makeEnergy()
-    {
-        
-    }
-
-    private void makeTraffic()
-    {
-        
-    }
-
-    private void makeSolar()
-    {
-        
-    }
-
-    private GameObject MakeHeatObj(string name = "heat", float val = 0)
-    {
+        if (val<0f)
+            val = 0f;
+        if (val>1f)
+            val = 1f;
         var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        cube.GetComponent<Renderer>().material.color = new Color(val, 1f-val, 0f, 0.5f);
         cube.GetComponent<Renderer>().material.shader = Shader.Find("Transparent/Diffuse");
+        if (greenblue)
+            cube.GetComponent<Renderer>().material.color = new Color(0f, 1f-val, val, a);
+        else
+            cube.GetComponent<Renderer>().material.color = new Color(val, 1f-val, 0f, a);
         cube.name = name + "_" + val;
         return cube;
     }
