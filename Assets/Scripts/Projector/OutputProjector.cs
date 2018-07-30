@@ -34,7 +34,7 @@ public class OutputProjector : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		InitVariables();
-		StartCoroutine(GetOutput());
+		StartCoroutine(Outer());
 	}
 	
 	// Update is called once per frame
@@ -56,7 +56,11 @@ public class OutputProjector : MonoBehaviour {
                 currHeatmap = getData["objects"]["heatmap"];
 			}
 		}
-		UpdateUI();
+        UpdateUI();
+		if (Time.frameCount % 250 == 0)
+		{
+            Resources.UnloadUnusedAssets();
+		}
 	}
 
 	void UpdateUI()
@@ -175,18 +179,21 @@ public class OutputProjector : MonoBehaviour {
                             makeHeat(x,y,tempCell["data"]["density"],0.4f);
                         break;
                     case 2:
-                        makeHeat(x,y,tempCell["data"]["diversity"],0.4f);
+                        if (tempID>=0 && tempID<=5)
+                            makeHeat(x,y,tempCell["data"]["diversity"],0.4f);
                         break;
                     case 3:
                         if (tempID>=0 && tempID<=5)
                             makeHeat(x,y,tempCell["data"]["energy"],0.4f);
                         break;
                     case 4:
+                        var corrCell = getData["grid"][x+((y+1)%16)*getData["header"]["spatial"]["ncols"]];
+                        var corrID = corrCell["type"];
                         if (tempID==6)
-                            makeHeat(x,y,tempCell["data"]["traffic"],0.25f);
+                            makeHeat(x,y,corrCell["data"]["traffic"],0.25f,true);
                         break;
                     case 5:
-                        makeHeat(x,y,tempCell["data"]["solar"],0.3f,true);
+                        makeHeat(x,y,tempCell["data"]["solar"],0.3f,false,true);
                         break;
                     default:
                         break;
@@ -351,10 +358,10 @@ public class OutputProjector : MonoBehaviour {
         dockViz.transform.Rotate(0f, 180f, 0f);
     }
 
-    private void makeHeat(int x, int y, float val, float a, bool greenblue = false)
+    private void makeHeat(int x, int y, float val, float a, bool reverse = false, bool yb = false)
     {
         GameObject heatTemp;
-        heatTemp = MakeHeatObj("heat_" + x + "_" + y, val, a, greenblue);
+        heatTemp = MakeHeatObj("heat_" + x + "_" + y, val, a, reverse, yb);
         heatTemp.transform.parent = bldgParent.transform;
         heatTemp.transform.localScale = new Vector3(bldgScale, 0.001f, bldgScale);
         heatTemp.transform.localPosition = new Vector3(x * (bldgScale + bldgGap) + bldgScale/2 + bldgGap + bldgOffset, 
@@ -363,7 +370,7 @@ public class OutputProjector : MonoBehaviour {
         heatList[x, y] = heatTemp;
     }
 
-    private GameObject MakeHeatObj(string name = "heat", float val = 0f, float a = 0.25f, bool greenblue = false)
+    private GameObject MakeHeatObj(string name = "heat", float val = 0f, float a = 0.25f, bool reverse = false, bool yb = false)
     {
         if (val<0f)
             val = 0f;
@@ -371,31 +378,59 @@ public class OutputProjector : MonoBehaviour {
             val = 1f;
         var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
         cube.GetComponent<Renderer>().material.shader = Shader.Find("Transparent/Diffuse");
-        if (greenblue)
-            cube.GetComponent<Renderer>().material.color = new Color(0f, 1f-val, val, a);
-        else
-            cube.GetComponent<Renderer>().material.color = new Color(val, 1f-val, 0f, a);
+        if (yb) // Solar YellowBlue 1-good 0-bad
+            cube.GetComponent<Renderer>().material.color = new Color(val, val, 1f-val, a);
+        else if (reverse) // Traffic  1-bad 0-good
+            if (val<=0.5f)
+                cube.GetComponent<Renderer>().material.color = new Color(2*val, 1f, 0f, a);
+            else
+                cube.GetComponent<Renderer>().material.color = new Color(1f, 2f-2*val, 0f, a);
+        else // Density, Diversity, Energy  1-good 0-bad
+            if (val<=0.5f)
+                cube.GetComponent<Renderer>().material.color = new Color(1f, 2*val, 0f, a);
+            else
+                cube.GetComponent<Renderer>().material.color = new Color(2f-2*val, 1f, 0f, a);
         cube.name = name + "_" + val;
         return cube;
     }
 
+	private void updateData(string str)
+	{
+		getData = null;
+		getData = JSONNode.Parse(str);
+	}
+
+	IEnumerator Outer()
+	{
+		yield return new WaitForSeconds(1.0f);
+		yield return StartCoroutine(GetOutput());
+	}
+
 	IEnumerator GetOutput()
-    {   
-        while(true)
-        {
-			using(UnityWebRequest request = new UnityWebRequest("https://cityio.media.mit.edu/api/table/UnityTest_out", "GET"))
+    {
+		WaitForSeconds wfs = new WaitForSeconds(dataGettingInterval);
+		while (true)
+		{
+			using (UnityWebRequest request = new UnityWebRequest("https://cityio.media.mit.edu/api/table/UnityTest_out", "GET"))
 			{
-				request.downloadHandler = (DownloadHandler) new DownloadHandlerBuffer();
+				request.downloadHandler = new DownloadHandlerBuffer();
 				request.SetRequestHeader("Content-Type", "application/json");
 				request.SetRequestHeader("charset", "utf-8");
-				request.chunkedTransfer = false; 
-				yield return request.Send();
+				request.chunkedTransfer = false;
+				request.SendWebRequest();
+				while (!request.downloadHandler.isDone)
+					yield return null;
 				if (request.isNetworkError || request.isHttpError)
 					Debug.LogError(request.error);
 				else
-					getData = JSONNode.Parse(request.downloadHandler.text);
+					updateData(request.downloadHandler.text);
+					// getData = JSONNode.Parse(request.downloadHandler.text);
+				request.downloadHandler.Dispose();
+				request.Dispose();
 			}
-            yield return new WaitForSeconds(dataGettingInterval);
-        }
+			if (dataGettingInterval > 0f)
+				yield return wfs;
+		}
+		wfs = null;
     }
 }

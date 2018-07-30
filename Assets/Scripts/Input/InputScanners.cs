@@ -228,14 +228,14 @@ public class InputScanners : MonoBehaviour
             setup = false;
         }
 
-        if (Time.frameCount % 60 == 0)
+		if (Time.frameCount % 250 == 0)
         {
             // Debug.Log(Time.frameCount);
             // prepare json
             // JSONNode inputJSON = getJSON();
             // if (hitTex)
             // Debug.Log(inputJSON);
-            System.GC.Collect();
+			Resources.UnloadUnusedAssets();
         }
     }
     
@@ -501,13 +501,14 @@ public class InputScanners : MonoBehaviour
                     request.downloadHandler = (DownloadHandler) new DownloadHandlerBuffer();
                     request.SetRequestHeader("Content-Type", "application/json");
                     request.SetRequestHeader("charset", "utf-8");
-                    request.chunkedTransfer = false; 
+                    request.chunkedTransfer = false;
                     yield return request.Send();
                     if (request.isNetworkError || request.isHttpError)
                         Debug.LogError(request.error);
                     else
                         GameObject.Find("JSONtext").GetComponent<Text>().text = postData.ToString();
                         // Debug.Log("Post complete!");
+				    request.Dispose();
                 }
                 needToPost = false;
             }

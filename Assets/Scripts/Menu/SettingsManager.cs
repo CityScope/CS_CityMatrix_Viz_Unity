@@ -22,7 +22,7 @@ public class SettingsManager : MonoBehaviour {
 		settings.screenDisplay = 0;
 		settings.projectorDisplay = -1;
 		Load();
-		Application.targetFrameRate = 30;
+		Application.targetFrameRate = 25;
 	}
 	
 	// Update is called once per frame

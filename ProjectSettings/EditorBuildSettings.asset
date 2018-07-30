@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Projector.unity
     guid: e125e40489c32394297007b75e689319
+  - enabled: 1
+    path: Assets/Scenes/Screen.unity
+    guid: 0aa98f1137c766e4c981880e54ee1c5e
   m_configObjects: {}
