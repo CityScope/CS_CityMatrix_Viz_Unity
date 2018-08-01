@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 using SimpleJSON;
+using Proyecto26;
 
 public class OutputProjector : MonoBehaviour {
 
@@ -40,7 +41,7 @@ public class OutputProjector : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		// Debug.Log(getData);
-		if (getData != null)
+		if (getData != null && isValid(getData))
 		{
 			if (bldgList == null)
 			{
@@ -60,12 +61,13 @@ public class OutputProjector : MonoBehaviour {
 		if (Time.frameCount % 250 == 0)
 		{
             Resources.UnloadUnusedAssets();
+            Debug.Log("TRASH CLEANED");
 		}
 	}
 
 	void UpdateUI()
 	{
-		if (getData != null && refresh)
+		if (getData != null && isValid(getData) && refresh)
 		{
 			// Debug.Log(getData["grid"][0][0]);
 			UpdateBldgs();
@@ -81,10 +83,10 @@ public class OutputProjector : MonoBehaviour {
     /// </summary>
     private void UpdateBldgs()
     {
-        foreach (Transform child in bldgParent.transform)
-        {
-            Destroy(child.gameObject);
-        }
+        foreach (var child in bldgList)
+            Destroy(child);
+        // for (int i=transform.childCount-1; i>=0; i++)
+        //     Destroy(transform.GetChild(i).gameObject);
         MakeBricks();
     }
 
@@ -394,6 +396,14 @@ public class OutputProjector : MonoBehaviour {
         return cube;
     }
 
+	private bool isValid(JSONNode data)
+	{
+		return data["meta"]!=null &&
+				data["header"]!=null &&
+				data["grid"]!=null &&
+				data["objects"]!=null;
+	}
+
 	private void updateData(string str)
 	{
 		getData = null;
@@ -402,32 +412,37 @@ public class OutputProjector : MonoBehaviour {
 
 	IEnumerator Outer()
 	{
-		yield return new WaitForSeconds(1.0f);
+        Debug.Log("Outer");     
+		yield return new WaitForSeconds(1.0f);   
 		yield return StartCoroutine(GetOutput());
 	}
 
 	IEnumerator GetOutput()
     {
+        Debug.Log("Inner");        
 		WaitForSeconds wfs = new WaitForSeconds(dataGettingInterval);
 		while (true)
 		{
-			using (UnityWebRequest request = new UnityWebRequest("https://cityio.media.mit.edu/api/table/UnityTest_out", "GET"))
+			using (UnityWebRequest request = UnityWebRequest.Get("https://cityio.media.mit.edu/api/table/UnityTest_out"))
 			{
-				request.downloadHandler = new DownloadHandlerBuffer();
-				request.SetRequestHeader("Content-Type", "application/json");
-				request.SetRequestHeader("charset", "utf-8");
-				request.chunkedTransfer = false;
-				request.SendWebRequest();
-				while (!request.downloadHandler.isDone)
-					yield return null;
-				if (request.isNetworkError || request.isHttpError)
-					Debug.LogError(request.error);
-				else
-					updateData(request.downloadHandler.text);
-					// getData = JSONNode.Parse(request.downloadHandler.text);
-				request.downloadHandler.Dispose();
-				request.Dispose();
+                using (DownloadHandlerBuffer dhb = new DownloadHandlerBuffer())
+                {
+                    request.downloadHandler = dhb;
+                    request.SetRequestHeader("Content-Type", "application/json");
+                    request.SetRequestHeader("charset", "utf-8");
+                    request.chunkedTransfer = false;
+                    yield return request.SendWebRequest();
+                    if (request.isNetworkError || request.isHttpError)
+                        Debug.LogError(request.error);
+                    else
+                        updateData(request.downloadHandler.text);
+                        // getData = JSONNode.Parse(request.downloadHandler.text);
+                }
 			}
+            // yield return RestClient.Get("https://cityio.media.mit.edu/api/table/UnityTest_out").Then(response => {
+            //     Debug.Log(response);
+            //     // updateData(response.Text);
+            // });
 			if (dataGettingInterval > 0f)
 				yield return wfs;
 		}
