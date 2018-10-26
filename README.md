@@ -28,8 +28,11 @@ CityMatrix was an effort towards evidence-based, democratic decision-making. Its
 Zhang, Yan. “CityMatrix – An Urban Decision Support System Augmented by Artificial Intelligence.” Massachusetts Institute of Technology, 2017.
 
 ## Credits
-Advisor: Kent Larson
+Advisor: Kent Larson  
 
-Main Contributor: 'Ryan' Yan Zhang, Alex Aubuchon, Kevin Lyons
+Main Contributor: 'Ryan' Yan Zhang, Alex Aubuchon, Kevin Lyons, Yifan Meng  
 
-Repo maintainer: 'Ryan' Yan Zhang <ryanz@mit.edu> 
+The following functionality of the program is developed by [Ariel Noyman](https://github.com/RELNO) and [Dalma Foldesi](https://github.com/foldalma) from repo [CS_CityScope_Unity](https://github.com/CityScope/CS_CityScope_Unity):  
+  1) webcam image capture and keystoning;  
+  2) scanners and sliders;  
+  3) color scanning; color calibration.  
